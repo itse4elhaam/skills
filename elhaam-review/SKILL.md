@@ -7,6 +7,21 @@ description: "Review code changes across seven lenses: codebase fit, simplicity,
 
 Review each diff hunk against the surrounding system. Catch boundary mistakes, unnecessary complexity, missing confidence, and hidden assumptions. Turn repeat findings into prevention.
 
+## Writing requirements
+
+Load and apply **both `no-bs` and `unslop`** before writing anything shown to the user. This includes progress updates, finding titles and explanations, HTML report text, chat summaries, teach-back, handoffs, and proposed or published PR comments. Do not wait for the user to name these skills.
+
+- Read [No BS](../no-bs/SKILL.md) from this repository. Use its brief context and Simplified Technical English. Do not assume the reader knows this codebase or its domain.
+- Resolve `unslop` by its skill name through the available skill tool or installed skills directories, then read and apply it. It can be installed separately from this repository. Use it to remove AI phrasing, vague abstractions, inflated claims, and unnecessary formatting.
+- If a dependency cannot be read, state which one is unavailable once. Continue with the plain-language rules below; do not claim to have applied an unread skill.
+- Preserve exact code, identifiers, paths, URLs, quotations, evidence, uncertainty, and severity. These writing rules govern presentation; they do not lower the review's evidence requirements.
+
+Give enough context for the reader to understand each issue without opening the source first. Name the user or system action, the condition that triggers the issue, and the visible consequence. Then explain the cause and the smallest fix in complete sentences. Explain necessary technical terms on first use. Prefer concrete words such as "payment retry" or "database query" over shorthand such as "retry semantics" or "persistence boundary."
+
+Keep sentences short enough to read once. Do not turn brevity into fragments, dense noun strings, unexplained acronyms, or slash-separated labels. Use headings and lists when they help the reader; do not expose the review checklist as report prose.
+
+Before delivering any text, run a No BS clarity pass and an Unslop editing pass. Check that a reader unfamiliar with the code can explain what breaks, when it breaks, why it matters, and what to do next. Recheck the edited text against the evidence so no condition, limitation, or causal step is lost.
+
 ## Required context gathering
 
 1. **Read the diff and changed files.** Identify feature intent, touched layers, and risky hunks. Record base/head and the promised user outcome, including non-goals.
@@ -97,24 +112,43 @@ Ask whether a new engineer can safely extend this next month.
 
 ## Output contract
 
-Always produce a standalone HTML findings file, readable without conversation context. Markdown requests get Markdown in addition. Use `/readable-html-dossier` when available; otherwise use self-contained HTML with inline CSS. Include scope/revision, evidence/source links, uncertainties, severity-tagged findings, automation follow-ups, and the output path.
+Always produce a standalone HTML findings file, readable without conversation context. Markdown requests get Markdown in addition. Use `/readable-html-dossier` when available; otherwise use self-contained HTML with inline CSS. Use that skill for layout and apply the [writing requirements](#writing-requirements) to every word of report prose.
 
-Use concise severity-tagged comments:
+Start with the review's conclusion and the most important consequence for the user. Give a brief explanation of the feature or workflow under review. Include scope/revision, evidence/source links, uncertainties, severity-tagged findings, automation follow-ups, and the output path. Put the conclusion and explanation before detailed source references.
+
+Group findings under **Blockers** for security, correctness, data loss, or material confidence gaps; **Should fix** for maintainability problems; **Teach-back** for useful patterns and prevention; and **Follow-ups** for deferred work. Omit empty groups and report a clean review when warranted.
+
+For each finding:
+
+1. Write a specific title that names the consequence. Keep severity and category as metadata, not a substitute for the explanation.
+2. Explain the triggering action and condition, expected behavior, and actual or statically proved failure in complete sentences.
+3. Explain the cause and smallest fix. Include a small concrete example or short flow when it makes the behavior easier to follow.
+4. Place the relevant `path:line`, source links, and supporting evidence beside the explanation. State what was checked and what remains unverified. Keep detailed logs or long traces in an evidence section.
+
+For example, present a verified payment retry issue like this. The scenario and paths below are illustrative, not findings to reuse:
 
 ```md
-[P1 security] `path:line` Problem. Why it matters. Smallest fix.
-[P1 correctness] `path:line` Action/state. Observable failure. Cause. Smallest fix.
-[P2 maintainability] `path:line` Problem. Existing pattern to use. Smallest fix.
-[P3 confidence] Missing scenario. What test/manual QA would prove it.
+### [P1 correctness] Retrying checkout can charge the customer twice
+
+If a payment succeeds but its response times out, the customer sees a failure
+and can retry. The retry sends a new payment request, so the customer can be
+charged again for the same order.
+
+In `src/checkout.ts:42`, each attempt creates a new payment identifier. Reuse
+one identifier for the order and check the first payment's status before
+creating another charge.
+
+The code path shows how a second charge can occur. A timeout-and-retry test
+has not been run.
 ```
 
-Separate **Blockers** (security/correctness/data loss/material confidence gaps), **Should fix** (readability/duplication/constants/local pattern drift), **Teach-back** (good patterns/automation/why it matters), and **Follow-ups** (deferred work).
+Do not compress a finding into "Action/state. Observable failure. Cause." or similar checklist fragments. For a short inline comment, retain enough context to name the trigger, consequence, cause, and fix. Do not pad a simple issue to match the example's length.
 
-Severity follows impact; confidence states how well the premise is proved. Category labels do not fix the priority. A confidence gap blocks when the unproved behavior carries material risk. Report a clean review when warranted.
+Severity follows impact; confidence states how well the premise is proved. Category labels do not fix the priority. A confidence gap blocks when the unproved behavior carries material risk.
 
-For handoffs, give the user outcome, rationale, constraints, and acceptance evidence. Leave implementation/slice planning to the engineer unless asked.
+For handoffs, give the user outcome, rationale, constraints, and acceptance evidence in the same plain language. Leave implementation/slice planning to the engineer unless asked.
 
-Publish inline PR comments only when the current user request explicitly directs publication. Then use `/posting-pr-review-comments`, which revalidates fresh PR state and posts one batched review. Requests to review a PR/branch or preview hypothetical findings stay read-only.
+Publish inline PR comments only when the current user request explicitly directs publication. Then use `/posting-pr-review-comments`, which revalidates fresh PR state and posts one batched review. Carry the same No BS and Unslop writing requirements into that handoff. Requests to review a PR/branch or preview hypothetical findings stay read-only.
 
 ## Review discipline
 
