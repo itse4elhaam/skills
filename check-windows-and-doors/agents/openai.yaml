@@ -1,0 +1,4 @@
+interface:
+  display_name: "Check windows and doors"
+  short_description: "Audit exposed entry points with evidence and coverage"
+  default_prompt: "Use $check-windows-and-doors to audit this repository for exposed data access and mutation risks, using local tests only, and report findings with coverage."
