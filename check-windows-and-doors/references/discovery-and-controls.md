@@ -6,14 +6,26 @@ Use the discovery cues that match the repository. Apply the control families to 
 
 | Area | Inspect |
 | --- | --- |
-| HTTP and framework routes | Route files, method exports, router/controller registration, mounting prefixes, middleware matchers, rewrites, old API versions, generated routes. |
+| HTTP and framework routes | Custom and installed native/framework/plugin route sources for the locked versions, method exports including implicit HEAD/OPTIONS, router/controller registrations, chained Express calls such as router.route(path).get(...).post(...), mounting prefixes, precedence and shadowing, middleware matchers, aliases, rewrites, old API versions, generated routes and static namespaces. |
 | Server actions and RPC | Callable `use server` exports, action wrappers, tRPC/procedure registration, database function grants, edge functions. Distinguish internal helpers from client-callable exports. |
 | GraphQL and realtime | Schema and resolvers, field resolvers, batching, subscriptions, websocket handshake and per-message/topic authorization. |
 | Direct database and storage | Client SDK calls, exposed schemas/tables/views/functions, grants, RLS policies, service-role bypasses, bucket policies, signed URLs and expiry. |
 | Files and integrations | Multipart parsing, upload destinations, download/export handlers, webhook ingress, callbacks, redirects, server-side fetches and imports. |
+| Browser and SSR | Browser fetch/SDK/form/navigation calls, page loaders, server-rendered payloads, proxies and SSR fetches, environment-derived hosts, redirects, service workers and alternate origins. Match callers to receiving operations and outbound sinks. |
+| Dynamic transports | Computed URLs/methods, registries, plugins, database/config-driven dispatch, integration SDKs, queues, event buses and non-HTTP transports. Bound each group by generator, possible values, credential context, destinations and effects. |
 | Operational routes | Health/debug/admin endpoints, cron authentication, job enqueueing, queue consumers reachable through untrusted payloads, deployment manifests. |
 
 Search broadly enough to find framework conventions, then follow actual registrations and callers. Inspect generated manifests if already available. Do not run a build merely to discover routes until its scripts and external effects have been checked.
+
+## Reconcile discovery
+
+Compare filesystem conventions, explicit and chained registrations, installed framework/plugin sources, schemas/manifests, callers, deployment rewrites and transport configuration. Record each source's count and explain duplicates, implicit methods, exclusions and mismatches against stable operation IDs. Inspect native registration and default middleware rather than assuming only custom code is exposed. If dependency source is unavailable, use supplied artifacts or version-matched official documentation; preserve the exact unresolved dependency if behavior remains unproved.
+
+For each dynamic group, inspect construction and dispatch, follow config/data provenance, and enumerate finite values or describe a proven bounded domain with each distinct control/effect branch. Examples include URL templates, plugin registries, integration SDK resource names and data-driven job types. A search hit for `fetch`, an imported SDK, or a label such as "dynamic network" is not a completed investigation. Unavailable live values do not prevent reviewing their validation, allowlists, credential propagation and sinks in source. Record uncertainty about the deployed values separately.
+
+Check every producer/consumer edge in both directions. Match browser/SSR requests to backend handlers, enqueues to consumers, events to subscribers and responses to serializers/caches. Reconcile alternate entry points that reach the same helper with different middleware or database roles. For shared-control evidence, list exact member IDs, effective matcher and registration order, exclusions and bypass branches. Source names and imports alone establish none of these.
+
+Discovery is complete only when every lead is mapped to an operation/group/edge or excluded with evidence, source-count differences are explained, and no unexplained dynamic domain remains.
 
 ## Control families
 

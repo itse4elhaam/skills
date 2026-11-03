@@ -5,7 +5,7 @@ description: Audit the full exposed application surface for unsafe data intake, 
 
 # Check windows and doors
 
-Find the ways an outside caller can read data, change state, or make the system do work. Trace each path to its actual controls. Deliver findings and a coverage summary, including what could not be checked.
+Find the ways an outside caller can read data, change state, or make the system do work. Trace each path to its actual controls. Complete an exhaustive source review and deliver evidence-backed findings with reconciled coverage. Discovery and authentication checks alone are not completed review.
 
 ## Operating boundaries
 
@@ -22,6 +22,14 @@ Read and apply [no-bs](../no-bs/SKILL.md), then resolve and read `unslop` throug
 
 Explain who can do what, under which condition, and what happens as a result. Give enough context to understand the issue before opening the source. Keep exact identifiers and evidence intact. Avoid fragments, unexplained security acronyms, alarmist claims, and a generic checklist presented as findings.
 
+## Effort and continuity
+
+Use the highest reasoning effort actually available for the audit. If the runtime exposes an effort setting, select its highest supported value; otherwise work at the available setting and state that limitation without claiming it was raised. Exhaustive tracing is mandatory within scope. Sampling, representative handlers, finding counts, task size, output length, and convenience are not completion criteria.
+
+Use independent subagents when breadth, unfamiliar framework behavior, or deep flows benefit from parallel investigation or challenge. Give each a bounded operation/branch assignment, source revision, required evidence and ledger output, safety boundaries, and dependencies. Assign shared controls and cross-service edges explicitly. The parent owns integration, checks returned evidence and membership claims, reconciles overlaps and gaps, and recovers failed or incomplete assignments itself or by reassignment. A delegate's summary or "done" is not proof of coverage. If delegation is unavailable, record that limitation and perform the same work sequentially; do not reduce scope.
+
+Read [the work ledger contract](references/work-ledger.md) before discovery. Create the persistent ledger at the start and update it as work proceeds. Checkpoint before compaction, context limits, or an unavoidable interruption. Resume from its pending queue and revision checks. A checkpoint is an explicitly incomplete progress record, not final audit delivery. Continue safe independent work until the completion gate passes or only specific external blockers remain.
+
 ## 1. Establish scope and policy
 
 Record repository, revision, dirty changes, apps/packages, requested exclusions, and the available evidence. Read applicable repository instructions. Identify frameworks and versions from manifests and lockfiles, deployment routing, shared middleware, database roles, and storage configuration. Use version-matched official documentation when framework behavior determines a conclusion; label it unknown if it cannot be verified.
@@ -32,15 +40,15 @@ Identify the actors and intended rules: guest, signed-in user, tenant member, ow
 
 Read [discovery and controls](references/discovery-and-controls.md). Start with `rg --files` and targeted searches, then reconcile results against route registration, framework conventions, API schemas, exports, migrations, and deployment configuration. Search hits are discovery leads, not findings or proof of completeness.
 
-Include REST methods, server actions, RPC procedures, GraphQL queries/mutations/subscriptions, webhooks, websocket messages, uploads/downloads, exports, public files, cron/job triggers, and database or object-storage operations exposed directly to clients. Trace downstream workers when an exposed operation enqueues work. Record alternate versions, aliases, rewrites, and debug/admin routes.
+Reconcile custom routes with native framework and plugin APIs, every method, alias, version and rewrite, RPC/server actions/functions, GraphQL fields and subscriptions, webhooks, streams and websocket messages, uploads/downloads/static namespaces, direct client database/storage access, browser and SSR request paths, integration transports, and alternate access paths. Include page routes and server-rendered data, cron/job triggers and downstream worker effects. Use the discovery reference to resolve registrations and dynamic groups; counts from different discovery methods must be explained rather than choosing the most convenient total.
 
-Assign a stable ID to each operation. Count different methods and different action/procedure exports separately. For generated or dynamic routes, identify the generator and enumerate its concrete operations where possible; otherwise record the unresolved group and do not claim a complete count. Group shared controls only after proving they apply to every listed member.
+Assign a stable ID to each operation. Count different methods and different action/procedure exports separately. For generated or dynamic routes, identify the generator and enumerate its concrete operations where possible; otherwise investigate its registration logic, dependencies, configuration/data sources, allowed values and dispatch behavior. Record a bounded domain and symbolic branches with evidence where concrete enumeration is impossible; an unbounded or unexplained group keeps discovery incomplete. Group shared controls only after proving they apply to every listed member.
 
 Use the inventory and control statuses in [report contract](references/report-contract.md). Include source locations, intended caller, input and output, side effects, and reachability. An internal helper is not an exposed route merely because it is exported. A server-only file is not proof that its callable actions are protected.
 
 ## 3. Trace each operation end to end
 
-Follow caller-controlled input through routing, middleware, handler, service, query or external request, side effect, and serialized response. For each applicable control, record enforcement evidence, a supported finding, or a specific gap. Check reads and writes; a GET can have side effects and a mutation can leak records.
+Assign and trace every operation and data-flow branch from caller-controlled input through effective routing/middleware, handler, service, query or external sink, transaction and side effects, and all output channels. Include rejection, error, retry, concurrency, streaming and asynchronous branches with materially different controls or effects. Record branch/edge ownership and evidence for all nine control families in the ledger. Every applicable subcheck needs enforcement evidence, a supported finding, or a specific unresolved dependency; one proven check cannot stand for its entire family. Check reads and writes; a GET can have side effects and a mutation can leak records.
 
 Inspect the detailed controls in the reference. At minimum establish:
 
@@ -64,10 +72,18 @@ Where safe and useful, add or run a small local test that exercises the actual e
 
 Record command, environment, expected result, actual result, and limitations. Prefer tests that show the defect before a fix and pass after it when fixing is authorized. Do not change application behavior just to make the audit pass.
 
-## 5. Deliver findings and coverage
+## 5. Reconcile the completion gate
+
+Before final delivery, reconcile discovery sources, operation IDs, dynamic groups, branches and cross-service edges, shared-control membership and ordering, all nine families and their subchecks, finding counterevidence, delegate output, and actual test records. Inspect any contradictory or missing evidence and continue the work.
+
+A complete source audit requires complete discovery within the explicit scope, zero unreviewed pathways, zero avoidably partial checks, and resolved operation/branch/control statuses. A supported defect counts as reviewed work, never as a reason to stop reviewing other paths. The report contract defines the exact gate and separate source and deployment states.
+
+For a real external blocker, first exhaust safe independent source work. Record the exact flow, control, missing evidence, attempts, dependency owner and necessary next step. Keep the affected audit explicitly incomplete. "Unknown production config" cannot excuse unfinished handler, database, worker or output analysis. A separately listed deployment/runtime verification gap does not erase a completed source trace and must never be presented as deployed safety. Do not request live access or secrets merely to finish this skill.
+
+## 6. Deliver findings and coverage
 
 Use [report contract](references/report-contract.md). Lead with the highest-impact supported result, then explain the findings, control coverage, and remaining gaps. Include the complete operation inventory, in an appendix if needed. Use the user's requested format; otherwise use Markdown. Do not require HTML or a second review skill to complete this audit.
 
 Rank by credible impact and prerequisites; report confidence separately. Deduplicate shared causes while retaining affected operation IDs. Give the smallest fix and a regression check for each finding. If no supported defects remain, say so within the reviewed scope. Never equate a clean result with a security guarantee or imply unreviewed operations are safe.
 
-Before finishing, reconcile operation totals and control statuses. Confirm every discovered operation appears in coverage, every finding has evidence, every blocked check has a reason, and every claimed test has an actual result. If the audit is incomplete, name the remaining operations or discovery gaps and the next concrete check.
+Attach the reconciled ledger and gate result. If externally blocked or explicitly interrupted by the user, deliver an incomplete checkpoint with the exact pending work and resumption instructions. Do not turn ordinary remaining work into a final handback. An unchecked pathway is never safe.

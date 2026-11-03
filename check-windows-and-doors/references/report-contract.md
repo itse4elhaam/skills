@@ -1,6 +1,6 @@
 # Report contract
 
-Deliver findings and coverage together. Keep the opening readable without knowing the repository. Put detailed evidence and the full inventory after the main conclusions.
+Read and maintain [the work ledger](work-ledger.md). Deliver findings and reconciled coverage together only after applying the completion gate below. Keep the opening readable without knowing the repository. Put detailed evidence and the full inventory after the main conclusions.
 
 ## Scope
 
@@ -35,8 +35,8 @@ Keep one row per operation and distinguish concrete methods, actions, procedures
 
 Review status must be exactly one of:
 
-- `reviewed`: every applicable control has evidence or a supported finding; no unresolved applicable control remains.
-- `partial`: some checks are done, but at least one applicable control or policy remains unknown.
+- `reviewed`: every applicable source control and branch has evidence or a supported finding; no unresolved applicable source check remains.
+- `partial`: some source checks are done, but at least one applicable source control, branch or policy remains unknown.
 - `unreviewed`: no substantive control tracing completed.
 
 A reviewed operation can contain defects. Review status measures work completed, not safety. Record inspected internal helpers separately with evidence that they are not independently exposed; do not pad the operation totals with helpers.
@@ -45,7 +45,7 @@ A reviewed operation can contain defects. Review status measures work completed,
 
 For each operation, cover AUTHN, AUTHZ, INPUT, SINK, OUTPUT, BOUNDS, ABUSE, INTEGRITY, and PROTOCOL as defined in the control reference. Use one of `supported`, `finding`, `unknown`, or `not applicable` for each family. Link an evidence note, finding ID, or reason to every status. If a family has both a finding and unresolved checks, mark it unknown, retain the finding link, and describe both.
 
-Evidence may be shared, but list the affected operations and verify the shared control applies to each. Separate source-supported controls from runtime-tested controls. Mark unavailable production configuration unknown; a source audit does not establish its deployed state.
+Evidence may be shared, but list the affected operations and verify the shared control applies to each. Separate source-supported controls from runtime-tested controls. Keep deployment/runtime unknowns in their own linked verification records; a source audit does not establish deployed state. If missing configuration also prevents a source conclusion, keep that specific source check unknown and exhaust the rest of its source trace.
 
 Report these exact totals over the known inventory:
 
@@ -60,3 +60,18 @@ List actual commands, isolation evidence, synthetic actors/data, expected and ob
 For each remaining gap, state the affected operations, why it remains unknown, the evidence needed, and the next bounded local or read-only check. Distinguish deployment verification that would need separately authorized access.
 
 Finish with the first remediation or verification step that follows from the evidence. A zero-findings audit must still include coverage and limitations.
+
+## Hard completion gate
+
+Record each gate result with evidence links. Before passing, compare the final revision and dirty files with the versions recorded in the ledger. Invalidate stale evidence and retrace affected operations, branches, controls and registration dependencies, including callers/consumers, until every completion claim matches the final source state:
+
+1. Discovery sources reconcile to the full in-scope inventory. Custom, native/framework/plugin, dynamic and alternate paths have no unexplained omissions. Every dynamic group has an inspected generator, a proven domain bound and accounted control/effect branches, or an exact blocker.
+2. Every operation and branch has an owner and a completed trace across all nine control families, including applicable subchecks. Shared controls have proven membership and ordering. Cross-service edges and delegate outputs have been integrated and checked.
+3. Known operations = reviewed + partial + unreviewed. Reconcile the same statuses for branches, groups, edges and control subchecks, and list pending IDs rather than totals alone. Findings and local-test subsets must match their linked records.
+4. There are zero unreviewed pathways and zero avoidably partial checks. Every candidate finding has been challenged with counterevidence and every reported test has an actual record.
+
+Only passing all four gates permits **source review complete**. Report **deployment/runtime verification** independently as verified within named local conditions, partial, or not performed. Neither state is a guarantee of security.
+
+If a real external dependency prevents a source check, label the audit **incomplete, externally blocked** and enumerate the exact flow/control, missing evidence, safe attempts, exhausted independent source work, dependency owner and next action. Any ordinary unfinished tracing requires continued work, not this exception. A user stop or enforced runtime/context interruption permits an **incomplete checkpoint** with durable resumption details, never a completion claim. A generic deployment unknown cannot justify leaving source branches unreviewed.
+
+Regression example: 1,465 discovered operations, 982 partial, 483 unreviewed, shared authentication reviewed and two supported findings fails the gate. It requires continued tracing and reconciled discovery, even if the findings are severe. A later inventory with different native/custom totals is a reconciliation task, not evidence that either audit is finished.
