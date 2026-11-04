@@ -49,4 +49,12 @@ npx skills add itse4elhaam/skills --global --all --yes
 
 1. Create a new directory: `mkdir -p <skill-name>`
 2. Add `SKILL.md` with [frontmatter](https://github.com/mattpocock/skills). Model-invoked skills keep a trigger-oriented `description`. On runtimes that support user-only invocation, user-invoked skills set `disable-model-invocation: true`; OpenCode ignores that extension, so use its skill permissions when the distinction must be enforced there.
-3. Symlink it globally: `ln -sfn "$PWD/<skill-name>" ~/.agents/skills/<skill-name>`
+3. Commit the skill. The pre-commit hook symlinks each top-level directory containing `SKILL.md` into `~/.agents/skills/` if that name is missing. Existing entries, including dangling symlinks, are preserved.
+
+Enable the hook once per clone:
+
+```bash
+git config --local core.hooksPath .githooks
+```
+
+To link a skill before committing: `ln -s "$PWD/<skill-name>" ~/.agents/skills/<skill-name>`.

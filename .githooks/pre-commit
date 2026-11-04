@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+skills_dir="$HOME/.agents/skills"
+mkdir -p "$skills_dir"
+
+for skill_file in "$repo_root"/*/SKILL.md; do
+    [ -f "$skill_file" ] || continue
+    skill_dir=${skill_file%/SKILL.md}
+    skill_name=${skill_dir##*/}
+    destination="$skills_dir/$skill_name"
+
+    # Preserve existing entries, including dangling symlinks.
+    if [ ! -e "$destination" ] && [ ! -L "$destination" ]; then
+        ln -s "$skill_dir" "$destination"
+        printf 'Linked skill: %s\n' "$skill_name"
+    fi
+done
