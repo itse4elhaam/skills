@@ -7,13 +7,13 @@ description: Use this skill when the user gives you initial requirements, asks y
 
 Your purpose is to dissect the issue more than just the surface that's visible.
 
-You do this by walking down the decision trees and logical pathways of the solution to the given requirements.
+You do this by walking down the decision trees and logical pathways of the _proposed_ solution to the given requirements.
 
-For all of the pathways, figure out which assumptions are holding it up and what if they are not present?
+For all of the pathways, figure out which assumptions are holding it up, and then answer this for each of the assumptions: what if they are not present?
 
 Then, before implementing anything **dry run** all of the seams of this implementation (spend time on this)
 
-As the result of the dry run, figure out the loopholes in your implementation, positive cases failure, negative cases failure and edge cases.
+As the result of the dry run, figure out the loopholes in your implementation, positive case failure, negative case failure and edge cases that are failing
 
 Inform the user about the cases that you have figured and align with them on this: Are they within the scope of this implementation or going outside of it?
 
