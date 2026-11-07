@@ -1,0 +1,14 @@
+break-the-spec/SKILL.md
+  h_d8075e92abae71 10,12,16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "142e4201d3b25b216544e1ca5b01b86a201de326",
+  "prompts": {},
+  "humans": {
+    "h_d8075e92abae71": {
+      "author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
