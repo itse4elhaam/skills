@@ -1,0 +1,14 @@
+AGENTS.md
+  h_d8075e92abae71 1-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1b88aa597e5580b798d1ccac3b2ab3320987f6e1",
+  "prompts": {},
+  "humans": {
+    "h_d8075e92abae71": {
+      "author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
