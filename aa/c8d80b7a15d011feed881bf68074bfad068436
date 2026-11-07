@@ -1,0 +1,21 @@
+.githooks/pre-commit
+  s_4a734219fe47ca::t_a3de72e8f73694 1-19
+README.md
+  s_4a734219fe47ca::t_84382d7f03749d 52-60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "aac8d80b7a15d011feed881bf68074bfad068436",
+  "prompts": {},
+  "sessions": {
+    "s_4a734219fe47ca": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1a6c6-97ea-7c90-a408-58d5c65adfcd",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
