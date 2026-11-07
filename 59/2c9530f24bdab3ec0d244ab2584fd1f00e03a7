@@ -1,0 +1,19 @@
+audit-docs/SKILL.md
+  s_a271cfd3b0559d::t_483e0cbb7ffe7b 1-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "592c9530f24bdab3ec0d244ab2584fd1f00e03a7",
+  "prompts": {},
+  "sessions": {
+    "s_a271cfd3b0559d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1a6ef-b436-7e53-a1e7-061640be6d88",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
