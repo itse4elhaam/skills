@@ -1,0 +1,19 @@
+README.md
+  s_c5d5c354970c37::t_9df3764238ce19 23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "595c2c829f8307ef3dbdb3dcf693f7148c16922a",
+  "prompts": {},
+  "sessions": {
+    "s_c5d5c354970c37": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1b759-9bf2-70d1-9cd7-d99c56cce41f",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
