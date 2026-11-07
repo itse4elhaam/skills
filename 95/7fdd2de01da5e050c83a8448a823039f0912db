@@ -1,0 +1,18 @@
+load-bearing/SKILL.md
+  h_d8075e92abae71 1-42
+load-bearing/agents/flow-tracer.md
+  h_d8075e92abae71 1-22
+load-bearing/agents/recurrence-miner.md
+  h_d8075e92abae71 1-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "957fdd2de01da5e050c83a8448a823039f0912db",
+  "prompts": {},
+  "humans": {
+    "h_d8075e92abae71": {
+      "author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
