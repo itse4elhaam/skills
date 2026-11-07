@@ -1,0 +1,19 @@
+html-feedback/SKILL.md
+  s_c5d5c354970c37::t_f28e7166f93c0e 8,10,14,16-18,22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "59b9d7403a21b4dc051abd367ece3a47bb064170",
+  "prompts": {},
+  "sessions": {
+    "s_c5d5c354970c37": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1b759-9bf2-70d1-9cd7-d99c56cce41f",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
