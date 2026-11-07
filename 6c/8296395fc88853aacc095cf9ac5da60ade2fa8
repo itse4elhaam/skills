@@ -1,0 +1,33 @@
+check-windows-and-doors/SKILL.md
+  s_9cd27149bdc163::t_b8985c32a439dc 8,25-32,43,45,51,75-83,89
+check-windows-and-doors/agents/openai.yaml
+  s_9cd27149bdc163::t_fcd60a86238078 4
+check-windows-and-doors/references/discovery-and-controls.md
+  s_9cd27149bdc163::t_1e91c3c921c988 9,14-15,20-29
+check-windows-and-doors/references/report-contract.md
+  s_9cd27149bdc163::t_8cc669cc86a995 3,38-39,48,63-77
+check-windows-and-doors/references/work-ledger.md
+  s_9cd27149bdc163::t_666e99fcfd5c75 1-30
+check-windows-and-doors/tests/check_evaluation.py
+  s_9cd27149bdc163::t_11f97a035cc78a 1-46
+check-windows-and-doors/tests/evaluation-cases.json
+  s_9cd27149bdc163::t_9cfe59410b6077 1-14
+check-windows-and-doors/tests/evaluation.md
+  s_9cd27149bdc163::t_cc6d1982199964 1-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6c8296395fc88853aacc095cf9ac5da60ade2fa8",
+  "prompts": {},
+  "sessions": {
+    "s_9cd27149bdc163": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1a096-d204-7ad2-8fde-e25a812e7321",
+        "model": "unknown"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
