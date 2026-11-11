@@ -11,7 +11,7 @@ AI agent skills for code review, Git workflows, documentation, and structured da
 | Skill | Description |
 |---|---|
 | **check-windows-and-doors** | Audit exposed APIs, server actions, RPCs, webhooks, and direct data access. Trace security controls, use isolated local tests, and report evidence-backed findings with operation-level coverage. |
-| **elhaam-review** | Personal code review with seven lenses: codebase boundary, simplicity, test confidence, security/server boundaries, scalability, maintainability, and automation feedback. Defaults to an HTML findings report. |
+| **elhaam-review** | Reviews code the way Elhaam does: every hunk earns its place, fits the codebase, reads like English, treats server exports as public endpoints, carries tests that earn their place, and fixes the cause once. Writes an HTML report and inline comments in his voice. |
 | **static-pr-dry-run** | Bounded static pre-ship review of a PR or diff. Builds a traceable obligation ledger, source-traces each case, reports exact ledger counts, exposes runtime gaps, and returns `SHIP`, `SHIP AFTER CHECKS`, or `DO NOT SHIP`. |
 | **elhaam-voice** | Write or rewrite text in Elhaam's personal voice — warm, direct, thoughtful, commercially aware, leading with a clear position. Preserves conviction and user-authored language while removing generic AI polish and corporate fog. Model-invoked for first-person writing; never for code or tech docs. |
 | **pr-review-dossier** | Read-only investigation of GitHub PR review feedback. Fetches review threads via GraphQL and produces an evidence-backed HTML dossier with a recommended decision or way ahead. |
