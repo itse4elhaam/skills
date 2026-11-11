@@ -30,6 +30,7 @@ AI agent skills for code review, Git workflows, documentation, and structured da
 | **github-graphql-first** | Fetch structured GitHub data — PRs, reviews, review threads, comments, project items, timelines — using `gh api graphql`. |
 | **linear-issue-recon** | Pull full context from a Linear issue (description, comments, linked issues and PRs), explore the codebase, and produce an HTML dossier with a way-ahead recommendation. |
 | **upload-to-drive** | Upload to Google Drive with `rclone` instead of the MCP, and free local space by deleting only copies verified on Drive, after the user confirms. |
+| **boxes-dev** | Run work on boxes.dev cloud devboxes with the `dvb` CLI: create, stage files, exec, agent threads, sleep/destroy hygiene, and a box-hour budget guard. Credentials stay off the boxes. |
 | **subagent-retry** | Recover stuck or incomplete subagent work — extract output, assess completeness, then finish the remainder or fire a follow-up agent. User-invoked. |
 
 ## Installing from this repo
