@@ -23,6 +23,16 @@ Every call prints a NOTICE saying rclone's shared Drive client_id is being retir
 
 Calls hang when the machine sleeps or the network drops. Wrap each one in `timeout`. Give large files a long timeout and add `--progress` or `--stats 30s`. Retrying is safe because `copy`/`copyto` skip files that are already identical.
 
+## Local layout
+
+Video files live in `~/Videos/editing/<project>/`:
+- `source/`: downloaded originals. Delete once Drive has the same md5.
+- `work/`: anything a script can rebuild (crops, mattes, plates, transcripts, previews). Delete without uploading once the work is done.
+- `exports/`: finished versions. Delete once uploaded and verified.
+- `tools/`: helper scripts. Keep.
+
+Leave folders outside `~/Videos/editing/`, such as `untangle/`, alone. Some old paths (`~/Videos/insta`, `~/Videos/Insta-reels`, `~/Videos/upwork-profile-edit`) are shortcuts into this layout; `du -sh` them with `-L` or measure the real folders instead.
+
 ## Free up space
 
 1. Find what is big with `du -sh`.
