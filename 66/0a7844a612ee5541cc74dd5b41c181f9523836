@@ -1,0 +1,21 @@
+boxes-dev/SKILL.md
+  s_c6dd72e009c4d8::t_9ff0f4fe6f6b65 1-102
+README.md
+  s_c6dd72e009c4d8::t_3f4c88fd4ae443 33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "660a7844a612ee5541cc74dd5b41c181f9523836",
+  "prompts": {},
+  "sessions": {
+    "s_c6dd72e009c4d8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c3f105f5-0713-4842-b1b7-09bbc9c35e56",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Elhaam Basheer Chaudhry <e4elhaam@gmail.com>"
+    }
+  }
+}
