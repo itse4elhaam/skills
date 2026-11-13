@@ -320,7 +320,7 @@ Use this format:
 |---|---|---|
 | P1 (security/correctness) | P0 | Direct mapping |
 | P2 (maintainability) | P1 | Direct mapping |
-| P3 (confidence) | P2 | Only if material AND diff-anchorable; otherwise suppress or record as general observation |
+| P3 (minor or unproved) | P2 | Only if material AND diff-anchorable; otherwise suppress or record as general observation |
 
 For GitHub suggestion blocks (` ```suggestion ``` `), see [GITHUB-API.md#suggestion-blocks](GITHUB-API.md#suggestion-blocks).
 
