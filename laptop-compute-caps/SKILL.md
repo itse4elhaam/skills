@@ -28,9 +28,10 @@ In order, it:
 1. Queues on `~/.cache/capped/<NAME>.lock` (default `heavy`, shared by every agent), so one capped job runs at a time.
 2. Waits while machine RAM use (total minus available) is above 60%.
 3. Samples `/proc/stat` for 1.5 s and sets the caps. CPUs: floor(nproc / 2) minus the CPUs busy now (rounded up), at least 1. Memory: 70% of RAM minus RAM used now. `--cpus` and `--mem` (IEC: `512M`, `12G`) only lower them.
-4. Runs the command in a systemd user scope with `MemoryMax` and `MemorySwapMax=0`, pinned with `taskset` to the least-busy CPUs, under `nice -n 19` and `ionice -c3`.
+4. Runs the command in a systemd user scope (`capped-<NAME>-<pid>.scope`) with `MemoryMax` and `MemorySwapMax=0`, pinned with `taskset` to the least-busy CPUs, under `nice -n 19` and `ionice -c3`.
+5. Governs the CPUs while the command runs. Every 5 s it measures the whole machine. Above 50%, it shrinks the job by 1 CPU per 5 points over, rounded up, to at least 1. Below 40%, it grows the job by 1 CPU, up to the start allocation. It re-pins with `taskset -acp` only the processes listed in the job scope's `cgroup.procs`, so it covers the job's children and every thread and never touches another process. Each change is logged with a timestamp. The governor exits with the command.
 
-It prints the machine load and the chosen caps to stderr and exits with the command's code. Exit 137 means the job was killed at the memory cap. The queue and the RAM wait can block for minutes, so run long jobs in the background and poll their log.
+It prints the machine load, the chosen caps and each governor change to stderr and exits with the command's code. Exit 137 means the job was killed at the memory cap. The queue and the RAM wait can block for minutes, so run long jobs in the background and poll their log.
 
 **Match the program's threads to the pinned CPUs.** The command sees `CAPPED_CPUS`, `CAPPED_MEM` (bytes), `OMP_NUM_THREADS`, `MKL_NUM_THREADS` and `OPENBLAS_NUM_THREADS`. Pass `CAPPED_CPUS` to the program's own flag inside `bash -c`, so it expands after the caps are chosen:
 
@@ -46,7 +47,8 @@ Proven on this machine, 15 Nov 2026: i7-1370P, 20 logical CPUs (6 P-cores with H
 - The user systemd instance delegates only the `memory` and `pids` controllers (`cat /sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/cgroup.controllers`). `systemd-run --user -p CPUQuota=` therefore has no effect. CPU is capped by pinning (`taskset`) and priority (`nice`), RAM by the scope's `MemoryMax`.
 - `MemorySwapMax=0` makes a job die at its cap instead of pushing the laptop into swap.
 - `ionice -c3` acts only under the BFQ I/O scheduler. `nvme0n1` runs kyber, so today it is a placeholder.
-- The caps are set once, at start. If his load rises later, the job keeps its CPUs; `nice 19` makes it yield.
+- A cap set once at start doesn't hold: in a test on 15 Nov 2026, other load rose mid-run and the machine reached 57.7%, hence the governor. The memory cap stays fixed at its start value.
+- The governor can only shrink the job. When other load alone is above 50%, the machine stays above 50% even with the job at 1 CPU.
 
 ## Check a running job
 
@@ -59,4 +61,4 @@ top -bn2 -d1 | grep '%Cpu' | tail -1    # the second frame is a clean 1 s sample
 free -g                                  # (total - available) / total stays at or under 0.70
 ```
 
-Over a cap: stop the job and rerun it through `capped.sh`, which budgets again against the new load.
+If the machine stays above 50% with the job governed down to 1 CPU, or RAM goes above 70%, stop the job and rerun it later through `capped.sh`.
