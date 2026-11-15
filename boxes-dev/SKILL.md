@@ -1,6 +1,6 @@
 ---
 name: boxes-dev
-description: boxes.dev / `dvb` - run work on cloud devboxes from the workstation. Use when creating, driving, waking, sleeping or destroying a boxes.dev box, starting a Claude or Codex thread on one, moving files to or from a box, or budgeting box-hours.
+description: boxes.dev / `dvb` - run work on cloud devboxes from the workstation. Use when creating, driving, waking, sleeping or destroying a boxes.dev box, starting a Claude or Codex thread on one, moving files to or from a box, choosing a box size, or budgeting box-hours.
 ---
 
 # boxes.dev
@@ -13,7 +13,7 @@ Run `dvb` only on the workstation. Agents on a box get the separate `dvb-onbox` 
 
 1. `dvb version` shows `login: ok`. If not, the user signs in with `dvb setup`.
 2. The project is set up: `dvb agent-init status --json` shows phase `complete`. A new project goes through `dvb agent-init`, which the user approves.
-3. The user approved creating boxes and the spend for this task. Approval for one task does not carry over to the next.
+3. Spend is approved. Elhaam, 15 Nov 2026: "use boxes.dev compute as much as you want", bigger boxes included (see [Budget](#budget)).
 4. No STOP flag exists (see [Budget](#budget)).
 
 Resolve the fingerprint at runtime and use it everywhere:
@@ -37,7 +37,7 @@ dvb exec --project "$FP" --target <instanceId> --cwd project --json -- bash -lc 
 
 - The new box's id and name are under `data.target`, not `data`. `create --wait` also reports a failed create with `ok: true`, so read `data.operation.status`. `dvb cp` worked with the `name` (`content-fork-…`); `exec` and `devboxes *` take the `instanceId`.
 - A new devbox starts from the latest Template snapshot. Push the branch first or `dvb cp` what the snapshot lacks. After changing the Template box, `dvb checkpoint <template-alias>` so new devboxes get the change. When several boxes need the same heavy inputs or packages, stage them once on the Template box and checkpoint, so each box starts ready instead of re-uploading and reinstalling.
-- The snapshot has system `python3` without numpy, OpenCV, onnxruntime or Pillow. `python3 -m venv ~/job/venv && ~/job/venv/bin/pip install …` took under 2 minutes. The default box has 4 vCPUs and about 7 GiB of usable RAM, so size worker pools and thread counts for 4 cores.
+- The snapshot has system `python3` without numpy, OpenCV, onnxruntime or Pillow. `python3 -m venv ~/job/venv && ~/job/venv/bin/pip install …` took under 2 minutes. A default box has 4 vCPUs and about 7 GiB of usable RAM. Size worker pools and thread counts from the box's `nproc`, because a bigger project's boxes have more.
 - Run anything longer than a few minutes detached with `nohup … &` and poll its log, as above. Then a dropped connection or `exec` timeout can't kill the job. Watch the log from a background loop on the workstation that exits on a done marker or `Traceback`, rather than one blocking `exec`.
 - `dvb cp` uploaded at about 1.7 MB/s (173 MB in 104 s, Nov 2026). Stage only what the job reads.
 - Any `exec` on a sleeping box wakes it, and it stays awake and burning box-hours until you sleep it again.
@@ -99,11 +99,16 @@ dvb sleep <template-alias>    # the Template box uses the alias commands: sleep,
 
 ## Budget
 
-- One box-hour is one default 4 vCPU / 8 GiB box awake for an hour. Larger sizes cost more per hour: 4/16 GiB about 1.39, 8/16 GiB 2, 8/24 GiB about 2.39, 8/32 GiB about 2.78. The largest is 8 vCPU / 32 GiB. Size is fixed per project and `dvb` has no size option, so a bigger box means the user creates a new project in the desktop app. For one job, a second project rarely beats finishing on the box you have. To go faster, split the work across several default boxes.
+- One box-hour is one default 4 vCPU / 8 GiB box awake for an hour. Bigger sizes burn more per awake hour: 4 vCPU / 16 GiB about 1.39, 8/16 GiB 2, 8/24 GiB about 2.39, 8/32 GiB (the largest) about 2.78. The live list can be narrower.
+- **Bigger boxes.** Elhaam, 15 Nov 2026: "you can use a bigger box where it makes sense btw, no constraints". Use one whenever it makes the work faster or better, such as a job that runs out of RAM or scales past 4 cores. Splitting across several boxes is the other lever; pick whichever finishes sooner.
+  - Size is fixed per project at setup and covers its Template box and every devbox. `devboxes create` has no size option.
+  - Get one with a new project through `dvb agent-init` (`dvb agent-init guide flow`). `start --project <folder>` seeds a manifest whose `project.instanceType` comments list the live size keys (seen: `4vcpu8gb`, `8vcpu16gb`). Set the key, run `check`, then `run`. `run` uploads the folder and creates the Template box, so it needs Elhaam's explicit go-ahead. The desktop app's **New project** does the same, but refuses automation.
+  - A folder maps to one project (`~/workspace/content` is `content`), so start the bigger one from a separate clone.
+  - The new project gets its own fingerprint and a bare Template box. Rebuild the venv, models and shared inputs there and checkpoint before creating devboxes. Pro allows 10 projects.
 - Pro: 300 h per period, the Template box plus 12 awake devboxes. Overage is $0.40 per box-hour. Plans and current usage: `dvb agent-docs billing-and-limits`.
 - Read usage through the Template box: `dvb exec --project "$FP" --target <template-alias> --cwd project --json -- bash -lc 'dvb-onbox billing status --json'`. `data.stdout` has `boxHoursUsed` and `awakeDevboxes`.
 
-**Guard pattern.** A long run gets a guard loop that reads usage every 20 minutes and writes two flag files:
+**Guard pattern.** A long run gets a guard loop that reads usage every 20 minutes and writes two flag files. Usage is weighted by size, so bigger boxes reach the thresholds sooner:
 
 - `WARN` at the warn threshold: finish the current round and start nothing new.
 - `STOP` at the stop threshold: the guard sleeps every awake box. Threads check for `STOP` before every create, wake or `threads start --target new-devbox`. If it exists, they create and wake nothing, pull back what they have, tell the user and stop.
