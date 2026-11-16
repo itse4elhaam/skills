@@ -1,0 +1,5 @@
+interface:
+  display_name: "Thread title"
+  short_description: "Keep the current title aligned with active work"
+policy:
+  allow_implicit_invocation: true

@@ -27,6 +27,7 @@ AI agent skills for code review, Git workflows, documentation, and structured da
 | **document-ux** | Compare actual UI against the selected design with matched before/after screenshots, or record and annotate a short interaction video when behavior must be shown. |
 | **diagnosing-bugs** | Diagnose bugs through a symptom-specific feedback loop, with a separate incident-evidence route for intermittent failures, recovery and unverified causes. |
 | **missed-asks** | Read-only audit of linked conversations against delivered work. Reports only forgotten, partial or unverified requests, preserving corrections and explicit deferrals. |
+| **thread-title** | Check the current title on each user prompt and update it when the active work changes. |
 | **logging-and-monitoring** | Leave durable, bounded diagnostic evidence when implementing runtime behavior so an agent can trace a later failure without reproducing it. |
 | **implementation-ownership** | Decision-oriented ownership review of an agent-implemented change: the problem it solves, why this approach, its assumptions, failure modes and detection signals, and the smallest safe rollback — ending in one approval recommendation at a named understanding level. The approval review; complements understand-code-like-an-owner's explanation. |
 | **doc-map** | Maintain a branch-aware DOC_MAP.html registry with document summaries, reading metadata, and persistent read status. |
