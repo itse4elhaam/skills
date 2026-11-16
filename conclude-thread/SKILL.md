@@ -4,13 +4,14 @@ description: The purpose is to conclude threads and reduce clutter
 disable-model-invocation: true
 ---
 
-The user is invoking this because they have approved the changes in this thread COMPLETELY and want to mentally forget that this thread existed.
+Finish the agreed work so the user can mentally forget that this thread existed.
 
-This includes:
+Use the authorization already given. Preserve draft-only requests, named finalizers, release conditions and explicit deferrals. Invoking this skill does not erase them or authorize unrelated work.
 
-1. Running any final checks to ensure correctness and quality (in the fastest way possible)
-2. Merging the PR into the respective branch as agreed
-3. Deploying the changes or any other ritual that comes with this process - whether this is deploying to a server or locally
-4. Self-settling the current thread
+Before closing, reconcile the current requests against what was delivered. Keep corrections and superseded requests straight. Distinguish implemented, verified, merged, installed and actually running; one does not prove the next. Reuse the task list rather than creating another report.
 
-In the end the user requested task should be completed and the thread should be settled
+Run the relevant final checks, complete the agreed merge and deployment steps, and verify the active revision where applicable. Do not ask again for permission already given. If a consequential decision remains unresolved, name it and finish the independent authorized work.
+
+Give a short receipt: what the user can now do, the material proof, and any remaining gap or deliberate deferral. Passing tests alone is not proof that the requested outcome is active.
+
+Then self-settle the thread using the host's thread tool. A read-only investigation can finish and settle without inventing merge or deployment work.

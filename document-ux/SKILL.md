@@ -1,11 +1,21 @@
 ---
 name: document-ux
-description: Use when a UI interaction must be shared with someone who wasn't there: a bug or a feature walkthrough, reproduced, annotated, and rendered as a short captioned video for a GitHub issue or PR. Triggers include "record a video of this bug/feature", "make a repro/demo video", "document this UX interaction", "annotate this reproduction/walkthrough", or any request to show a UI interaction to someone who cannot run the app themselves.
+description: Show UI changes and interactions to someone who cannot run the app. Use for matched before/after screenshots, comparing actual UI with a selected design, or short annotated bug and feature videos for issues and PRs.
 ---
 
 # Document UX
 
-Turn a bug report or a feature walkthrough into a short annotated video: a raw browser recording, reviewed frame by frame, then rendered with captions that point at the exact moment things matter. The video rides in a GitHub issue or PR so a reviewer who was not there can see the interaction without running the app.
+Make evidence a reviewer can inspect without running the app. For a static visual change, use matched screenshots. For behavior, use a short sequence or annotated video that shows the interaction.
+
+## Static changes and selected designs
+
+Carry the selected reference, requested viewport, content, state and themes into implementation. Compare the actual rendered UI against that reference; do not substitute a fresh mockup for the implementation.
+
+Capture before and after with the same size, crop, content and relevant state. Identify the source revisions and explain concrete deviations from the selected design. Inspect the images before claiming a match. Report an unavailable baseline honestly.
+
+Label synthetic fixtures and mocked devices. A screenshot cannot prove input passes through an overlay, audio is captured or an upload succeeded. Use the interaction workflow below for those claims.
+
+Deliver the matched images with concise captions and their paths. If attachments are requested, verify they are actually accessible in the issue or PR. A static change does not require the video pipeline below.
 
 **Leading words:** _repro_ means the shortest deterministic path to the subject, the only thing the video should show; _key beat_ means the exact moment the video exists to show, the bug moment for a bug or the defining moment of the flow for a feature walkthrough, the frame everything else serves; _dead time_ means footage that carries no meaning, to be trimmed.
 
