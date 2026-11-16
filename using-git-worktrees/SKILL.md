@@ -1,77 +1,64 @@
 ---
 name: using-git-worktrees
-description: Git worktrees with explicit location confirmation. Use when creating, moving, relocating, or choosing a directory for a Git worktree.
+description: Create, relocate, and clean up Git worktrees using the global ~/.worktrees default while preserving checkout state and application bindings.
 ---
 
 # Using Git worktrees
 
-Keep worktrees outside the main checkout and make their location a human decision.
+## Location
 
-## 1. Confirm the location
+The user's standing default is `$HOME/.worktrees`. Use it without asking,
+including when older worktrees live elsewhere. An explicit path or root in the
+current request overrides that default. Do not reopen the location debate for
+each task.
 
-Ask the user where to place the worktree before running any command that creates or moves it. Ask every time, even when the repository already has a worktree convention.
-
-Use the question tool with these choices in this order:
-
-1. `/home/elhaam/workspace/coding/[projectName]/worktrees/` marked `Recommended` - example to look at here is `/home/elhaam/workspace/coding/bluum/worktrees/`
-2. `.worktrees/` inside the repository
-
-Allow a custom answer. The first choice is the default, but selection still belongs to the user. Continue only after the user answers.
-
-Completion criterion: the user has selected an explicit worktree root for this operation.
-
-## 2. Choose the destination name
-
-Use `<repository>.<branch>` under the selected root. Replace `/` in the branch name with `-`.
-
-Example:
+Use `<repository>.<branch>` under that root. Derive the repository name from
+the canonical checkout and replace `/` in the branch name with `-`.
 
 ```text
 repository: bluum-medusa
 branch: fix/klaviyo-checkout-links
-destination: /home/elhaam/workspace/coding/bluum/worktrees/bluum-medusa.fix-klaviyo-checkout-links
+path: /home/elhaam/.worktrees/bluum-medusa.fix-klaviyo-checkout-links
 ```
 
-If the requested destination already exists, ask the user for a different name.
+If an automatically chosen name is occupied, choose an unused numeric suffix.
+Inspect and report collisions at explicitly requested paths rather than
+replacing another checkout. Keep permanent checkouts, shared configuration,
+and live symlink targets outside this temporary root.
 
-Completion criterion: the destination is unique and names both the repository and branch.
+## Create or move
 
-## 3. Preserve Git state
+Prefix Git commands with `GIT_MASTER=1` for the local Git hooks. A missing
+optional Git helper skill does not block ordinary worktree commands.
 
-Load `git-master`. Prefix every Git command with `GIT_MASTER=1`.
-
-Before creating or moving a worktree, record:
-
-```bash
-GIT_MASTER=1 git worktree list --porcelain
-GIT_MASTER=1 git status --short --branch
-```
-
-For a new worktree:
+Before changing locations, record `git worktree list --porcelain` and the
+checkout's `git status --short --branch`. Independent work normally starts
+from the remote default branch; dependent work keeps its required local base.
 
 ```bash
-GIT_MASTER=1 git worktree add <destination> -b <branch>
-```
-
-For an existing worktree:
-
-```bash
+mkdir -p "$HOME/.worktrees"
+GIT_MASTER=1 git worktree add <destination> -b <branch> <base>
 GIT_MASTER=1 git worktree move <source> <destination>
 ```
 
-Use `git worktree move` rather than a filesystem move. Preserve staged, unstaged, and untracked files. Do not commit them unless the user separately asks for a commit.
+Use `git worktree move`, not a filesystem move. Preserve staged, unstaged,
+and untracked files. A policy change alone does not relocate existing worktrees.
 
-Completion criterion: Git registers the worktree at the confirmed destination.
+T3 Code and other applications can bind threads, processes, or cached paths to
+their own worktrees. Use their supported tooling for managed work. Move a
+managed checkout only when its application bindings can also be updated.
+Keep checkouts owned by other active tasks in place.
 
-## 4. Verify the result
+Afterward, verify Git's worktree list and destination status against the
+recorded state. Report the chosen path and any preserved changes.
 
-Run:
+## Cleanup
 
-```bash
-GIT_MASTER=1 git worktree list --porcelain
-GIT_MASTER=1 git -C <destination> status --short --branch
-```
+When the task includes cleanup, remove a worktree only after its work is merged
+or otherwise preserved, its status is clean, and it has no active owner or live
+configuration references. Use `GIT_MASTER=1 git worktree remove <path>`.
 
-Compare the final status with the status recorded before the operation. Report the destination and any preserved changes.
-
-Completion criterion: the destination exists, Git lists it, and the worktree's changes match the pre-operation state.
+Keep dirty, active, locked, unmerged, and application-managed checkouts until
+those conditions are resolved. Do not force removal or delete a whole worktree
+root to tidy it up. Canonical checkouts and live symlink targets are permanent,
+not worktree cleanup targets. Verify removal from both disk and Git's list.
