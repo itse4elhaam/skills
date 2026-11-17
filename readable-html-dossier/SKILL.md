@@ -5,82 +5,33 @@ description: Use when creating a standalone HTML report, dossier, investigation 
 
 # Readable HTML Dossier
 
-Create a self-contained HTML document optimized for humans reading dense context. Default to dark theme; support light mode through CSS variables and add a visible toggle only when the report is meant for interactive theme switching.
+A dossier is a standalone HTML page the reader looks at to understand a situation and decide, fast. HTML earns its place over a chat reply by showing: the reader gets the point from headings and visuals alone, and reads prose only to go deeper.
 
-## Design contract
+## Steps
 
-- **Reading first:** body text targets `65ch`, line-height `1.6–1.75`, 16–18px equivalent via `rem`/`clamp()`.
-- **Responsive by default:** no horizontal scrolling at normal zoom, 200% zoom, or laptop widths.
-- **Dark default:** use softened dark colors, not pure black/white. Light mode must be available through CSS variables and `data-theme="light"`; visible toggles are optional unless interactivity is required.
-- **Standalone:** inline CSS; no build step. Only use CDN scripts when diagrams genuinely need Mermaid.
-- **Semantic:** `main`, `section`, `article`, headings in order, tables only for tabular data.
-- **Context-rich:** include background, evidence, uncertainty, and domain links when those help a human make a decision.
-- **Typography:** body text in Source Sans 3 (18px/1.7), headings in Inter (weight 650, -0.02em letter-spacing), code in JetBrains Mono (14px/1.6). Prose column capped at 760px. See [REFERENCES.md](REFERENCES.md#typography) for the full spec.
+1. **Name the decision.** Write down the decision the reader brings to this page and your answer to it.
+   Completion: the first screen holds the answer as a one-line headline and one visual that carries it.
 
-## Workflow
+2. **Give every point a visual.** List the points the reader needs, ranked most consequential first, and show each in the form that fits it:
+   - flow, sequence, or architecture → diagram
+   - options or trade-offs → comparison matrix
+   - a change → before/after diff or side-by-side
+   - ranking, severity, or size → scored table or bar strip
+   - states and transitions → state diagram
+   - events over time → timeline
+   - structure or ownership → tree
+   - a code location → short annotated snippet
+   A point with no visual form becomes one callout.
+   Completion: every section opens with its visual.
 
-1. **Choose the reader job.** Decide whether the dossier is for decision, review, onboarding, debugging, or audit.
-   Completion: the title and first paragraph say what a human can decide after reading.
+3. **Caption, don't explain.** Under each visual, write at most two sentences: what to notice and why it matters. Put the evidence (`file:line` links, quotes, command output) and any longer reasoning in a collapsed `<details>` beneath it.
+   Completion: headings, visuals, and captions alone carry the whole argument, and every claim has its evidence one click away.
 
-2. **Shape the document.** Use this default order:
-   - Executive summary
-   - Background context
-   - Findings or evidence cards
-   - Recommended actions
-   - Open questions / stale items
-   - Source links and domain documents
-   Completion: every major section has a clear reader purpose.
+4. **Build from the scaffold.** Copy the scaffold in [REFERENCES.md](REFERENCES.md#scaffold) and follow its visual contract. Draw diagrams as inline SVG with `/diagram-design`, interactive system flows with `/architecture-diagram`, and charts with `/dataviz`. When a `DOC_MAP.html` sits in the output folder or one above it, or the caller says the map will open this dossier, also embed the [reading progress tracker](REFERENCES.md#reading-progress-tracker). Save where the caller asks; use `/tmp` only for one-off reports.
+   Completion: the file opens straight from disk with no network requests, and every `h2` and `h3` carries a stable `id`.
 
-3. **Write the HTML.** Save where the caller asks; use `/tmp` only for explicitly one-off reports and always report the path.
-   Completion: the file opens directly in a browser without a server.
+5. **Look at it.** Render the page at about 1280px and 375px wide and view both renders, through the host's HTML preview tool when one exists, otherwise a headless screenshot with `/agent-browser`. Skim each render the way the reader will: headings, visuals, captions.
+   Completion: the skim gives the answer and the reason at both widths, visuals stay legible in both themes, the page never scrolls sideways, and you fixed what the renders showed.
 
-4. **Verify readability.** Check line length, heading order, contrast, zoom/reflow, and print behavior.
-   Completion: the document remains readable on a laptop, large monitor, and browser zoom.
-
-5. **Open in browser (default).** Detect which browser is open (Chrome, Firefox, Brave, Edge, etc.), collect the absolute path of the HTML document, and open it as a new tab in that browser. Skip this step only if the user explicitly asks not to open it.
-   Completion: the dossier is open in the user's browser for immediate reading.
-   See [REFERENCES.md](REFERENCES.md) for the exact detection and opening process per browser.
-
-## Minimal scaffold
-
-```html
-<!doctype html>
-<html lang="en" data-theme="dark">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dossier</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Inter:wght@400;650&family=JetBrains+Mono:wght@400;500&display=swap');
-    :root{color-scheme:dark light;--bg:#121212;--panel:#1b1b1b;--text:#e6e1d9;--muted:#aaa39a;--accent:#8ab4ff;--border:#333;--font-body:"Source Sans 3",system-ui,sans-serif;--font-heading:"Inter","Source Sans 3",system-ui,sans-serif;--font-code:"JetBrains Mono","SFMono-Regular",Consolas,monospace}
-    [data-theme="light"]{--bg:#fafafa;--panel:#fff;--text:#1f1f1f;--muted:#5f5f5f;--accent:#0057b3;--border:#ddd}
-    body{margin:0;background:var(--bg);color:var(--text);font:400 1.125rem/1.7 var(--font-body)}
-    main{max-width:min(760px,100% - 2rem);margin:auto;padding:clamp(1.5rem,4vw,4rem) 0}
-    .card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin:1rem 0}
-    h1,h2,h3{font-family:var(--font-heading);font-weight:650;line-height:1.2;letter-spacing:-0.02em}
-    a{color:var(--accent)} code{font-family:var(--font-code);font-size:.9em} pre{font-family:var(--font-code);font-size:.875rem;line-height:1.6;overflow-x:auto}
-    @media print{body{background:#fff!important;color:#000!important;font-size:11pt}.card{break-inside:avoid}a[href^="http"]::after{content:" (" attr(href) ")";font-size:.85em}}
-  </style>
-</head>
-<body><main><article><h1>Dossier title</h1></article></main></body>
-</html>
-```
-
-## Evidence writing
-
-Each finding should answer:
-- What happened?
-- Why does it matter?
-- What evidence supports it?
-- What should a human or agent do next?
-- What could make this stale?
-
-Use tables for comparisons, cards for findings, and callouts for uncertainty. Do not bury actions inside prose.
-
-## Quality checks
-
-- Body text column stays near 45–75 characters.
-- Contrast meets WCAG AA; aim higher for long reading.
-- Links are underlined or otherwise not color-only.
-- Print stylesheet forces light background and exposes URLs.
-- Empty sections are removed.
+6. **Hand it over.** Show the dossier through the host's HTML preview tool when one exists; otherwise open it in the user's browser as described in [REFERENCES.md](REFERENCES.md#browser-opening). Report the absolute path either way.
+   Completion: the dossier is in front of the user and they have its path.
