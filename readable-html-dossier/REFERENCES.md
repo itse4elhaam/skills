@@ -4,7 +4,7 @@ Load the section named by `SKILL.md` only when that step is active.
 
 ## Visual contract
 
-Use this normative presentation contract:
+Use this presentation contract. A visible theme toggle is optional; add one only when the reader will switch themes.
 
 - Body: system sans-serif stack, `1.125rem/1.7`, prose width `min(65ch, 100% - 2rem)`.
 - Headings: system sans-serif stack, weight `650`, line height `1.2`, letter spacing `-.02em`.
@@ -13,11 +13,11 @@ Use this normative presentation contract:
 - Layout: semantic landmarks and ordered headings; tables only for tabular data; no page-level horizontal overflow at narrow widths or 200% zoom.
 - Links: visibly underlined and distinguishable without color alone.
 - Print: force a light palette and expose external URLs.
-- Dependencies: inline required CSS and JavaScript. When a diagram is deemed required, use the `architecture-diagram` skill from `~/.agents/skills/architecture-diagram`; keep the dossier readable when that resource is unavailable.
+- Dependencies: inline all CSS and JavaScript; load no fonts or scripts from the network.
 - Text size floors: body text minimum effective rendered size 18px; secondary, label, and metadata text minimum 14px. When a control's text would fall below the minimum, enlarge the control rather than shrinking the text.
-- Responsive layout: above 768px viewport width use the full width with sidebar or columnar hierarchy as the dossier structure requires. At or below 768px, switch to single-column with no sidebar; search and filter controls appear inline at section tops.
+- Responsive layout: one prose column at every width; wide tables and code scroll inside their own container.
 
-Minimal scaffold:
+## Scaffold
 
 ```html
 <!doctype html>
@@ -46,7 +46,7 @@ Minimal scaffold:
 
 ## Reading progress tracker
 
-The dossier reports reading progress to its opener window via `postMessage` when one exists. A directly opened dossier without an opener uses manual fallback progress.
+The dossier reports reading progress to `DOC_MAP.html` when the map opened it; opened any other way, the tracker does nothing. Set `documentId` to the dossier's path relative to the folder holding `DOC_MAP.html` (usually the repo root), with `/` separators, so it matches the ID the map assigns.
 
 Serialize the complete metadata object, then replace HTML-sensitive characters before inserting that complete result as the metadata block's text:
 
@@ -142,7 +142,7 @@ Local-file origins may be opaque, so this sender must use `"*"` as the target or
 
 ## Browser opening
 
-Open local output directly; no server or browser automation is part of delivery.
+Use this when the host has no HTML preview tool. Open the local file directly, with no server.
 
 1. Resolve and serialize the file URI safely with an installed Python executable:
 
@@ -177,4 +177,3 @@ else
 fi
 ```
 
-Do not use Playwright, Puppeteer, Selenium, or any visible automated browser. Do not take screenshots or perform exhaustive interaction testing. The single verification pass in Step 6 is the only check needed.
