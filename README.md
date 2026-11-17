@@ -36,6 +36,7 @@ AI agent skills for code review, Git workflows, documentation, and structured da
 | **upload-to-drive** | Upload to Google Drive with `rclone` instead of the MCP, and free local space by deleting only copies verified on Drive, after the user confirms. |
 | **boxes-dev** | Run work on boxes.dev cloud devboxes with the `dvb` CLI: create, stage files, exec, agent threads, sleep/destroy hygiene, and a box-hour budget guard. Credentials stay off the boxes. |
 | **subagent-retry** | Recover stuck or incomplete subagent work — extract output, assess completeness, then finish the remainder or fire a follow-up agent. User-invoked. |
+| **ship-via-worktree-pr** | Hand a task to a subagent in an isolated worktree that ships it as a PR and merges it when the user has authorized merging, then fast-forward local refs and bring the merged change into the current branch. |
 
 ## Installing from this repo
 
