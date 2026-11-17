@@ -29,7 +29,9 @@ As results arrive, verify findings against the work and decide what needs fixing
 
 Fix verified, in-scope findings when authorized, run the relevant checks again, and start a fresh review on the updated snapshot. Reinvite the original reviewers where available, with the fixes and remaining objections. In T3 Code, use a new `delegate_task` for each re-review.
 
-Interpret `Council N` as a minimum score of N/10, where N is from 1 to 10. For example, `Council 9.5` sets a target of 9.5/10. A request for a council of a given size sets the reviewer count. With a score target, require each blocking reviewer to return a score at or above the target on the same current revision. Missing scores or unavailable blocking reviewers leave the target unverified. Without a target, use the blocking reviewers' verdicts. Stop at a user-set round limit or when a round yields no verified in-scope fix that could make progress. Report the last scores, blockers, and unmet target, if any. Keep the review within the original scope and follow the user's merge instructions.
+Interpret `Council N` as a minimum score of N/10, where N is from 1 to 10. For example, `Council 9.5` sets a target of 9.5/10. A request for a council of a given size sets the reviewer count. The target is met when at least one blocking reviewer scores the current revision and every blocking reviewer scores it at or above the target. Missing scores or unavailable blocking reviewers leave the target unverified. Without a target, use the blocking reviewers' verdicts.
+
+End the review loop when the target is met or, without a target, when blocking reviewers accept the revision. Also stop at a user-set round limit or when a round yields no verified in-scope fix that could make progress. Report the last scores, blockers, and unmet target, if any. Keep the review within the original scope and follow the user's merge instructions.
 
 ## Report the evidence
 
