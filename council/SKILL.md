@@ -1,6 +1,7 @@
 ---
 name: council
 description: Convene available agents to independently challenge a plan, implementation, or audit when the user asks for Council.
+disable-model-invocation: true
 ---
 
 # Council
