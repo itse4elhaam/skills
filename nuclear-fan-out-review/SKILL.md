@@ -23,4 +23,4 @@ After alignement with this, proceed to the next step:
 
 ---
 
-In the end create a single ~/.agents/skills/readable-html-dossier file with the findings, ensure the document contains enough context for the user to make informed decisions and the document is written in an engaging and precise manner.
+In the end write the findings as a single HTML dossier with `/readable-html-dossier`, ensure the document contains enough context for the user to make informed decisions and the document is written in an engaging and precise manner.

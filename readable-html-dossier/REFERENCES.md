@@ -4,20 +4,21 @@ Load the section named by `SKILL.md` only when that step is active.
 
 ## Visual contract
 
-Use this normative presentation contract:
+Use this presentation contract. A visible theme toggle is optional; add one only when the reader will switch themes.
 
-- Body: system sans-serif stack, `1.125rem/1.7`, prose width `min(65ch, 100% - 2rem)`.
+- Body: system sans-serif stack, `1.125rem/1.7`. Content column up to `1100px`; prose lines cap at `65ch` while visuals use the full column.
 - Headings: system sans-serif stack, weight `650`, line height `1.2`, letter spacing `-.02em`.
 - Code: system monospace stack, `.875rem/1.6`, with horizontal overflow contained by the code block.
 - Theme: softened dark colors by default; define light mode through CSS variables and `data-theme="light"`.
 - Layout: semantic landmarks and ordered headings; tables only for tabular data; no page-level horizontal overflow at narrow widths or 200% zoom.
 - Links: visibly underlined and distinguishable without color alone.
 - Print: force a light palette and expose external URLs.
-- Dependencies: inline required CSS and JavaScript. When a diagram is deemed required, use the `architecture-diagram` skill from `~/.agents/skills/architecture-diagram`; keep the dossier readable when that resource is unavailable.
+- Dependencies: inline all CSS and JavaScript; load no fonts or scripts from the network.
 - Text size floors: body text minimum effective rendered size 18px; secondary, label, and metadata text minimum 14px. When a control's text would fall below the minimum, enlarge the control rather than shrinking the text.
-- Responsive layout: above 768px viewport width use the full width with sidebar or columnar hierarchy as the dossier structure requires. At or below 768px, switch to single-column with no sidebar; search and filter controls appear inline at section tops.
+- Visuals: inline SVG scales to the column with `viewBox`, so a wide diagram shrinks its labels on a phone. Keep labels at 14px or larger at 375px: lay the diagram out vertically, or wrap it in `.scroll` and set its `min-width`. Wide tables scroll inside `.scroll` too, never the page.
+- Responsive layout: one column at every width.
 
-Minimal scaffold:
+## Scaffold
 
 ```html
 <!doctype html>
@@ -30,7 +31,10 @@ Minimal scaffold:
     :root{color-scheme:dark light;--bg:#121212;--panel:#1b1b1b;--text:#e6e1d9;--muted:#aaa39a;--accent:#8ab4ff;--border:#333;--font-body:system-ui,-apple-system,"Segoe UI",sans-serif;--font-code:ui-monospace,"SFMono-Regular",Consolas,monospace}
     [data-theme="light"]{--bg:#fafafa;--panel:#fff;--text:#1f1f1f;--muted:#5f5f5f;--accent:#0057b3;--border:#ddd}
     *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:400 1.125rem/1.7 var(--font-body)}
-    main{max-width:min(65ch,100% - 2rem);margin:auto;padding:clamp(1.5rem,4vw,4rem) 0}
+    main{max-width:min(1100px,100% - 2rem);margin:auto;padding:clamp(1.5rem,4vw,4rem) 0}
+    p,li,blockquote,figcaption{max-width:65ch} figure{margin:1.5rem 0} figcaption{color:var(--muted);margin-top:.5rem} svg{max-width:100%;height:auto} .scroll>svg{max-width:none;min-width:var(--min-width,640px)}
+    .scroll{overflow-x:auto} table{border-collapse:collapse;width:100%} th,td{border-bottom:1px solid var(--border);padding:.5rem .75rem;text-align:left;vertical-align:top}
+    details{margin:.5rem 0 1.5rem} summary{cursor:pointer;color:var(--accent)}
     .card{background:var(--panel);border:1px solid var(--border);border-radius:1rem;padding:1.25rem;margin:1rem 0}
     h1,h2,h3{font-weight:650;line-height:1.2;letter-spacing:-.02em} a{color:var(--accent);text-decoration:underline}
     code{font-family:var(--font-code);font-size:.9em} pre{font:400 .875rem/1.6 var(--font-code);overflow-x:auto;max-width:100%}
@@ -46,7 +50,7 @@ Minimal scaffold:
 
 ## Reading progress tracker
 
-The dossier reports reading progress to its opener window via `postMessage` when one exists. A directly opened dossier without an opener uses manual fallback progress.
+The dossier reports reading progress to `DOC_MAP.html` when the map opened it; opened any other way, the tracker does nothing. Set `documentId` to the dossier's path relative to the folder holding `DOC_MAP.html` (usually the repo root), with `/` separators, so it matches the ID the map assigns.
 
 Serialize the complete metadata object, then replace HTML-sensitive characters before inserting that complete result as the metadata block's text:
 
@@ -142,7 +146,7 @@ Local-file origins may be opaque, so this sender must use `"*"` as the target or
 
 ## Browser opening
 
-Open local output directly; no server or browser automation is part of delivery.
+Use this when the host has no HTML preview tool. Open the local file directly, with no server.
 
 1. Resolve and serialize the file URI safely with an installed Python executable:
 
@@ -177,4 +181,3 @@ else
 fi
 ```
 
-Do not use Playwright, Puppeteer, Selenium, or any visible automated browser. Do not take screenshots or perform exhaustive interaction testing. The single verification pass in Step 6 is the only check needed.
