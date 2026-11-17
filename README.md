@@ -20,6 +20,7 @@ AI agent skills for code review, Git workflows, documentation, and structured da
 | **using-git-worktrees** | Create or move Git worktrees only after the user confirms the location. Defaults to `/home/elhaam/workspace/coding/bluum/worktrees/` and preserves uncommitted changes during moves. |
 | **conflict-rebase-resolution** | Merge or rebase by gathering a holistic view of conflicts, then resolving them safely. |
 | **readable-html-dossier** | Create standalone, reading-first HTML reports for research, reviews, and investigations. |
+| **show-me** | Explain with a focused HTML diagram rendered inline in T3 Code and a brief takeaway. |
 | **html-feedback** | Give HTML artifacts a verified feedback path to the current agent, or an explicit conversational fallback. |
 | **html-read-aloud** | Add in-browser narration and synchronized scrolling to standalone HTML documents via the Web Speech API — block-by-block reading, active-block highlighting, voice/rate controls, progress persistence. Works from `file://` with no server, framework, or external dependency. Composes with readable-html-dossier. |
 | **understand-code-like-an-owner** | Explain code to someone who did not write it — an ownership-grade data-flow narrative anchored on a small dataset traced from the user's eyes into the app, in the reader's product language. Phase A of bug-explainer; standalone for onboarding and code walkthroughs. |
