@@ -1,6 +1,6 @@
 ---
 name: council
-description: Convene independent adversarial agents to challenge a plan, implementation, or audit when the user asks for Council.
+description: Convene available agents to independently challenge a plan, implementation, or audit when the user asks for Council.
 ---
 
 # Council
@@ -15,13 +15,13 @@ Before a code audit, address known in-scope issues and outstanding PR feedback a
 - Use `delegate_task` with the discovered provider instance and model. Choose high reasoning effort if the entry advertises it. Use the default service tier and keep fast mode off. Use only supported option IDs and values in `target.options`. Follow the host's wait or continuation instructions and respect its concurrency limits.
 - Outside T3 Code, use the current host's advertised subagent capabilities and delegation tools. Apply the same eligibility and selection rules with the information the host exposes.
 
-Honor the user's named members, count, and non-blocking preferences. Report each named member that cannot run and leave that seat empty. By default, select up to three reviewers, one per underlying model vendor. Count accounts and wrappers that serve the same vendor together. If a default seat is still open, at most one eligible reviewer with an unknown vendor can fill it.
+Honor the user's named members, count, and non-blocking preferences. Report each named member that cannot run and leave that seat empty. By default, select one reviewer from every eligible underlying model vendor. Count accounts and wrappers that serve the same vendor together. Any eligible agent can review regardless of its advertised role. If any eligible reviewers have an unknown vendor, include at most one as an unverified vendor when the user's requested roster or count allows it.
 
-Prefer the latest runnable flagship from each selected vendor, using a different model from the lead's when a comparable one is available. If the catalog is abbreviated, use an allowed host lookup to resolve a named member or find a better default. Use the eligible models you can verify when no further lookup is available. If fewer qualify, run with the available reviewers. If none can run, report that Council could not convene and label any in-scope self-review separately. Handle failed launches under the host's retry rules and report any missing coverage.
+Prefer the latest runnable flagship from each selected vendor, including the lead's model if it is the best available reviewer. If the host lists several comparable flagships, use its preferred model or the first eligible flagship in catalog order. If the catalog is abbreviated, use an allowed host lookup to resolve a named member or find a better default. Use the eligible models you can verify when no further lookup is available. If none can run, report that Council could not convene and label any in-scope self-review separately. Handle failed launches under the host's retry rules and report any missing coverage.
 
 ## Run independent reviews
 
-Give reviewers the original request, exact revision or snapshot, relevant checks, and scope. Use the same snapshot for the whole round. Launch independent reviews in parallel when supported. Give each reviewer a read-only brief to challenge the work against the user's intent and look for counterexamples, regressions, or weak evidence. Ask for severity, concrete evidence such as a file and line or check result, and what would resolve each finding. Ask for an explicit verdict and a score out of 10 for code reviews. Withhold peer verdicts and scores during the initial review.
+Give reviewers the original request, exact revision or snapshot, relevant checks, and scope. Use the same snapshot for the whole round. Launch independent reviews in parallel when supported and use batches if the host limits concurrent reviewers. Give each reviewer a read-only brief to challenge the work against the user's intent and look for counterexamples, regressions, or weak evidence. Ask for severity, concrete evidence such as a file and line or check result, and what would resolve each finding. Ask for an explicit verdict and a score out of 10 for code reviews. Withhold peer verdicts and scores during the initial review.
 
 As results arrive, verify findings against the work and decide what needs fixing. Keep a shared checkout stable for everyone reviewing it. Give non-blocking reviewers an isolated snapshot before launching them. If you cannot provide one, report the missing coverage. Treat late results as feedback outside the completed round.
 
