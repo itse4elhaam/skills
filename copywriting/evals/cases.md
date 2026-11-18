@@ -23,6 +23,7 @@ Run each case through a fresh agent that reads only `SKILL.md` and `CANON.md`, n
 
 - Control without the skill: "Leads engineering. Assumes something will break, and builds for the day it does." The same tidy reversal as the shipped line.
 - With the skill: "Leads engineering. Taught an Irish cabin-booking site to email for help when it's unwell." Personification, a picture, true whoever is on the alert list. Two other runs picked "Taught a cabin-booking site to email him when it's unwell", which flagged the recipient as a `[NEED]`, and "Taught Samsú's cabin-booking site not to give up on the first try".
+- With the skill after review fixes: "Leads engineering. Obsesses over reliability, so Samsú's booking site emails when it's unwell." It flagged who receives the alerts.
 
 ## Case 2: Hero headline and subline
 
@@ -70,3 +71,17 @@ Lough Cabins is a fictional fixture.
 - Flags Ciarán's approval and credit line.
 
 **Observed with the skill.** "We were a bit worried about no Wi-Fi because my partner works remote, but after the first day neither of us cared at all. The kids still talk about the hot tub." Flags for approval, credit line, kayaks and bread.
+
+## Case 5: Checkout pay button
+
+**Input**
+
+> Same fixture. Write the primary button on the checkout page. Pressing it charges the guest's card for the full stay and confirms the booking.
+
+**Pass criteria**
+
+- Names what happens: the charge and the booking.
+- No warm turn and no invented urgency, because money is at stake.
+- Isn't failed on the proof, nobody-else or billboard tests, which microcopy skips.
+
+**Observed with the skill.** "Pay {total} and book", with "Pay and book" as the runner-up when the total can't show on the button.
