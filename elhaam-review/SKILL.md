@@ -5,9 +5,9 @@ description: Reviews code changes the way Elhaam does. Use when reviewing a pull
 
 # Elhaam Review
 
-Review every hunk against the system it lands in. A change ships when it **earns its place**, **fits the codebase**, **reads like English**, treats every server export as a **public endpoint**, carries tests that **earn their place**, and **fixes the cause once** so the next caller is protected.
+Review every hunk against the system it lands in. A change ships when it **earns its place**, **fits the codebase**, **reads like English**, carries tests that **earn their place**, treats every server export as a **public endpoint**, holds up across the **whole flow**, and **fixes the cause once** so the next caller is protected.
 
-Judgement drives the review; the [output contract](#output-contract) is fixed. Before step 4, read [`references/house-style.md`](references/house-style.md): Elhaam's own comments, grouped by lens. The repo's `AGENTS.md`, `CONTRIBUTING.md`, and lint config win when they disagree.
+An approval is a claim: the next engineer can extend this change, it survives more data and users, and no reachable foot gun is open. The [verdict](#verdict) therefore accounts for every lens. Before step 4, read [`references/house-style.md`](references/house-style.md): Elhaam's own comments, grouped by lens. The repo's `AGENTS.md`, `CONTRIBUTING.md`, and lint config win when they disagree.
 
 ## Steps
 
@@ -17,10 +17,10 @@ Judgement drives the review; the [output contract](#output-contract) is fixed. B
    Done when you know the local convention for every hunk you will comment on.
 3. **Collect review threads.** For a GitHub PR, use `/github-graphql-first` when available; otherwise query GraphQL `reviewThreads` directly, because REST flattens thread context.
    Done when every thread and reply is collected, including resolved and outdated ones, and each claimed fix is checked against current code as implemented, deferred, or withdrawn.
-4. **Apply every lens to every hunk.** Then try to falsify each candidate: check callers, validation, installed versions, author replies, and product intent. Name the actor, action, and state, the observable failure, and the causal path. Static proof can be enough.
-   Done when each surviving finding has a severity, its evidence, and its smallest fix, and defects, standards feedback, confidence gaps, and questions stay distinct.
-5. **Deliver** using the [output contract](#output-contract).
-   Done when the HTML report exists. Publish nothing unless the current request explicitly says to.
+4. **Apply every lens to every hunk.** Then try to falsify each candidate: check callers, validation, installed versions, author replies, and product intent. Name the actor, action, and state, the observable failure, and the causal path. Static proof can be enough. Then sweep the [foot guns](references/conditional-checks.md#foot-guns) the diff can reach.
+   Done when each surviving finding has a [label](#findings), its confidence, its evidence, and its smallest fix.
+5. **Give the verdict and the findings** in the format the user asked for; with no format requested, reply in chat.
+   Done when the [verdict](#verdict) accounts for every lens. Publish nothing unless the current request explicitly says to.
 
 ## Lenses
 
@@ -85,6 +85,7 @@ Look across hunks. Hunks that are fine alone can add up to N+1 queries or repeat
 - Check caching, ISR or SSG, background jobs, and type mismatches against production data. Ask what happens with more users, tenants, records, flags, and retries.
 - For payments, bookings, multi-step writes, or side-effect jobs, read [stateful workflows](references/conditional-checks.md#stateful-workflows).
 - For shared hooks, middleware, loading flags, and locks, read [whole-flow tracing](references/conditional-checks.md#whole-flow-tracing).
+- For a schema, config, flag, or contract change, read [rollout and migrations](references/conditional-checks.md#rollout-and-migrations).
 
 ### 6. Fix the cause once
 
@@ -94,34 +95,37 @@ Prevention closes the review. Every repeatable finding gets a durable control (a
 - Put the control at the shared boundary so the next caller is protected. Group symptoms by cause; leave unrelated cleanup as a follow-up.
 - For a new or cited control, show one violating case fails and one legitimate case passes. Say whether it is documented, runnable locally, running in CI, or required before merge.
 
-## Severity
+## Findings
 
-| Level | Meaning | Group |
+Label each finding by what the author must do.
+
+| Label | Meaning | Author must |
 | --- | --- | --- |
-| P1 | Security hole, data loss, wrong money or booking, broken behavior, or no proof on a sensitive path | Blockers |
-| P2 | Maintainability: duplicated or misplaced code, hard to read, convention break with a named cost, a test of internals | Should fix |
-| P3 | Minor or unproved concern, worth a question | Should fix or Follow-ups |
+| Blocker | Security hole, data loss, wrong money or booking, broken behavior, or no proof on a sensitive path | Fix before merge |
+| Should fix | A cost the next engineer pays: duplicated or misplaced code, hard to read, convention break with a named cost, a test of internals | Fix in this PR or say why not |
+| Follow-up | Real, but outside this change's concern | Track it; the merge goes ahead |
+| Question | You cannot tell and the author may know | Answer before merge |
 
-Severity follows impact, not category; confidence states how well the premise is proved. A confidence gap is P1 when the unproved behavior carries material risk. Sensitive paths need more than one tester before merge: reliability beats shipping speed.
+The label follows impact, not category. State confidence beside it: **proved** (a trace or a failing test), **likely** (static reading), or **unverified**. An unverified concern that carries material risk is a Blocker until it is proved either way.
 
-## Output contract
+## Verdict
 
-Apply `no-bs` and `unslop` to every word the user or an author reads. Resolve each by name through the skill tool or installed skills directories. If one cannot be read, say so once and write plainly. Keep exact code, paths, quotes, evidence, uncertainty, and severity through every edit. Check that a reader new to the code can say what breaks, when, why it matters, and what to do next.
+Close with one verdict and a line per lens.
 
-### HTML report (always)
+- **Approve**: no Blocker, no open Question, every lens accounted for. List any Should fix as a condition.
+- **Request changes**: at least one Blocker.
+- **Cannot approve yet**: no Blocker found, but a lens is unverified on a sensitive file or a Question is open.
 
-Write a standalone HTML file with `/readable-html-dossier` when available, otherwise self-contained HTML with inline CSS. Also give Markdown when asked.
+Account for each lens with what you checked and its evidence, "not applicable" with the reason, or "not verified" with what would verify it. Sensitive paths need more than one tester before merge: reliability beats shipping speed.
 
-1. Conclusion and the most important consequence for the user.
-2. A short explanation of the feature or workflow under review.
-3. Scope and revision, evidence links, and what remains unverified.
-4. Findings under **Blockers**, **Should fix**, **Teach-back** (good patterns and prevention), and **Follow-ups**. Omit empty groups. Report a clean review when it is clean.
-5. Prevention controls from lens 6, and the output path.
+## Writing findings
 
-Each finding has a title naming the consequence, the trigger and condition, the expected and actual behavior, the cause, and the smallest fix in full sentences. Put `path:line` and evidence beside it; keep long traces in an evidence section. A simple issue gets a short finding. The scenario below is illustrative:
+Apply `no-bs` and `unslop` to every word the user or an author reads. Resolve each by name through the skill tool or installed skills directories. If one cannot be read, say so once and write plainly. Keep exact code, paths, quotes, evidence, uncertainty, and labels through every edit. Check that a reader new to the code can say what breaks, when, why it matters, and what to do next.
+
+Each finding has a title naming the consequence, the trigger and condition, the expected and actual behavior, the cause, and the smallest fix in full sentences, with `path:line` and evidence beside it. A simple issue gets a short finding. Report a clean review when it is clean. The scenario below is illustrative:
 
 ```md
-### [P1 correctness] Retrying checkout can charge the customer twice
+### [Blocker, likely] Retrying checkout can charge the customer twice
 
 If a payment succeeds but its response times out, the customer sees a failure
 and can retry. The retry sends a new payment request, so the customer can be
