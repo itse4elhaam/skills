@@ -11,6 +11,7 @@ AI agent skills for code review, Git workflows, documentation, and structured da
 | Skill | Description |
 |---|---|
 | **council** | Convene available reviewers to independently challenge the work, verify findings, and re-review fixes. |
+| **debate** | Debate an architectural or other costly-to-reverse decision so the agent does not just agree. Lays out the real options with sourced positions from named practitioners, argues against your favourite with evidence, moves an objection only on a new fact or argument, and says plainly when your option survives. Ends when you decide. |
 | **check-windows-and-doors** | Map what an application exposes to outside callers, by product feature. Inspect the sections you choose within a stated time, and give each opening a verdict of closed, open, or can't tell, with a break-in story for every finding. |
 | **elhaam-review** | Reviews code the way Elhaam does: every hunk earns its place, fits the codebase, reads like English, treats server exports as public endpoints, carries tests that earn their place, and fixes the cause once. Ends with a verdict that accounts for every lens, in whatever format you ask for. |
 | **static-pr-dry-run** | Bounded static pre-ship review of a PR or diff. Builds a traceable obligation ledger, source-traces each case, reports exact ledger counts, exposes runtime gaps, and returns `SHIP`, `SHIP AFTER CHECKS`, or `DO NOT SHIP`. |
