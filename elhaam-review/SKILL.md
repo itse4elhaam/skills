@@ -74,7 +74,7 @@ Treat server and data boundaries as attack surface until a trace proves otherwis
 - Return only data the caller may see. Filter to public rows at the data layer.
 - Client errors stay generic; detail goes to server logs.
 - `use client` is an island: put it on the smallest component that needs browser state.
-- Distrust the outside world (defensive); fail fast on our own broken guarantees (offensive). Read [offensive and defensive programming](references/conditional-checks.md#offensive-and-defensive-programming) when choosing.
+- Distrust the outside world (defensive); fail fast on our own broken guarantees (offensive). On a critical change, apply `offend-and-defend` (`~/.agents/skills/offend-and-defend/SKILL.md`); its Reviewing section sets the labels.
 - For React or Next.js, read [framework boundaries](references/conditional-checks.md#react-and-nextjs).
 
 ### 5. Whole flow

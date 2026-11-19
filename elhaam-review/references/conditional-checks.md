@@ -12,22 +12,6 @@ Read the section routed by the relevant lens. Apply it to the changed contract a
 - **Scenario choice.** Pick scenarios from the conditions that change execution: feature enabled or disabled, fresh or persisted state, slow or failed dependencies. For asynchronous UI, verify eventual recovery and the next user action. Assert external-call counts and blocking behavior next to returned values.
 - **Mutation check.** For critical rules, break the rule (by hand or with focused mutation testing) and watch the test go red.
 
-## Offensive and defensive programming
-
-The mindset is fault ownership. Defensive programming expects an unreliable outside world and protects the application. Offensive programming makes our own violated guarantees visible so we repair the cause instead of normalizing the bug.
-
-| Situation | Approach | Review expectation |
-| --- | --- | --- |
-| Guest input is invalid, a credential expires, or a provider returns malformed JSON | Defensive | Validate and return a controlled error before side effects. |
-| A payment request times out after submission | Defensive | Preserve an unknown outcome and reconcile; a timeout does not prove failure. |
-| An internal operation promised a confirmed booking, but returns a pending one | Offensive | Assert the promised postcondition and expose the bug; do not invent a confirmed result. |
-| A new internal state reaches a supposedly exhaustive transition handler | Offensive | Require exhaustive handling and a visible invariant failure before unsafe effects. |
-
-- **Defensive, at the boundary.** Bad input and outside failures are expected. Validate runtime inputs and provider replies, return controlled errors, and preserve recoverable state. Trace every cast and non-null assertion to the guarantee behind it.
-- **Offensive, on our guarantees.** A broken internal guarantee is our bug to diagnose. Use assertions and exhaustive state handling, and fail visibly before unsafe effects. State why the condition must hold. Return a failure, never a success-shaped default, when a guarantee breaks.
-
-Assert only a justified invariant. User mistakes and provider outages belong to runtime validation/error handling, not assertions. Keep diagnostics server-side and public errors safe. See [SQLite's assertion philosophy](https://sqlite.org/assert.html) for the distinction between a proved invariant and a condition that needs defensive handling.
-
 ## Stateful workflows
 
 For payments, bookings, multi-step writes, or jobs with side effects:

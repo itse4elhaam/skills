@@ -33,7 +33,7 @@ Find the work that keeps this codebase alive in two years: the cracks in what ca
 ## Smells
 
 - **Slow by schema** — latency the schema causes and a migration or query change fixes: no index on a filter/join/sort column, N+1 across the flow, unbounded reads, whole rows or blobs fetched for one field, JSON queried by key, independent awaits run in sequence, column types that force casts. Read `EXPLAIN` when a database is reachable; otherwise label it unmeasured.
-- **Unguarded boundary** — outside input or a provider reply trusted without runtime validation; casts and non-null assertions with no guarantee behind them; success-shaped defaults covering a broken invariant. Fault ownership rules: [defensive and offensive](~/.agents/skills/elhaam-review/references/conditional-checks.md#offensive-and-defensive-programming).
+- **Unguarded boundary** — outside input or a provider reply trusted without runtime validation; casts and non-null assertions with no guarantee behind them; success-shaped defaults covering a broken invariant. Fault ownership rules: [offend-and-defend](~/.agents/skills/offend-and-defend/SKILL.md).
 - **Open door** — data access proved authenticated but not scoped to owner or tenant.
 - **Fragile write** — multi-step writes or side effects with no transaction, idempotency, or recovery owner. See [stateful workflows](~/.agents/skills/elhaam-review/references/conditional-checks.md#stateful-workflows).
 - **Silent failure** — swallowed errors, partial `Promise.all` treated as success, a load-bearing flow with no log or metric; the first to know is a customer.
