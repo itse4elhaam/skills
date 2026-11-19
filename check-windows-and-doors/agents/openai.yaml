@@ -1,4 +1,4 @@
 interface:
   display_name: "Check windows and doors"
-  short_description: "Audit exposed entry points with evidence and coverage"
-  default_prompt: "Use $check-windows-and-doors to exhaustively audit this repository for exposed data access and mutation risks. Use the highest available effort and independent subagents when useful, maintain a persistent operation and branch ledger, use local synthetic tests only, and pass the coverage completion gate before final delivery."
+  short_description: "Map what an app exposes, then inspect the sections you choose"
+  default_prompt: "Use $check-windows-and-doors to map what this application exposes to outside callers, then ask me which sections to inspect and for how long."

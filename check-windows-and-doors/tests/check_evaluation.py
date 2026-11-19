@@ -3,7 +3,7 @@
 
 Give an evaluator only id/request fields from evaluation-cases.json and the skill.
 It writes a JSON array with id, decision, reason, and next_actions. Pass that file
-here. This checks completion decisions, not the truth of an actual security audit.
+here. This checks the skill's decisions and verdicts, not how well an inspection finds defects.
 Review reasons/actions against the rubric in evaluation.md as well.
 """
 import argparse
@@ -39,7 +39,7 @@ def main():
     if failures:
         print('\n'.join(failures))
         raise SystemExit(1)
-    print(f'{len(cases)} completion decisions passed; manually review reasons and actions.')
+    print(f'{len(cases)} decisions passed; manually review reasons and actions.')
 
 
 if __name__ == '__main__':
