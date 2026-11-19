@@ -1,6 +1,6 @@
 ---
 name: copywriting
-description: Copywriting for website and product copy. Use when writing or fixing headlines, taglines, CTAs, bios, testimonials, page sections, or UI microcopy the user asked for. For Elhaam's first-person copy, pair with elhaam-voice.
+description: Copywriting for website and product copy. Use when writing or fixing headlines, taglines, CTAs, bios, testimonials, page sections, or UI microcopy the user asked for.
 ---
 
 # Copywriting
@@ -84,7 +84,3 @@ Ration the turn. One device per line, and most lines on a page stay plain. Bios 
 - **Spec-sheet nouns.** Internals the reader can't picture, like caching layers, pipelines or schemas. Name the effect the reader would notice.
 - **Stacked fragments.** "Fast. Simple. Yours." Write one sentence that says the specific thing.
 - **Hollow superlatives and invented numbers.** "Best", "leading", "10x". Use the real number or flag `[NEED: ...]`.
-
-## Related
-
-- `elhaam-voice` owns the voice when the copy is Elhaam's own first-person writing, such as a founder note. This skill still supplies the options and the pick for its short lines.

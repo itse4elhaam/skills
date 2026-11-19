@@ -315,12 +315,12 @@ Use this format:
 | P1 | Significant maintainability, reliability, or test confidence gap. Should fix. |
 | P2 | Material but non-blocking issue. Worth addressing; not a blocker. Suppress nits, style-only changes, praise, and speculation. |
 
-**Severity mapping from elhaam-review:**
-| elhaam severity | Publishing severity | Condition |
+**Label mapping from elhaam-review:**
+| elhaam label | Publishing severity | Condition |
 |---|---|---|
-| P1 (security/correctness) | P0 | Direct mapping |
-| P2 (maintainability) | P1 | Direct mapping |
-| P3 (minor or unproved) | P2 | Only if material AND diff-anchorable; otherwise suppress or record as general observation |
+| Blocker | P0 | Direct mapping |
+| Should fix | P1 | Direct mapping |
+| Follow-up or Question | P2 | Only if material AND diff-anchorable; otherwise suppress or record as general observation |
 
 For GitHub suggestion blocks (` ```suggestion ``` `), see [GITHUB-API.md#suggestion-blocks](GITHUB-API.md#suggestion-blocks).
 
