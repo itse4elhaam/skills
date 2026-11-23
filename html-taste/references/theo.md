@@ -1,0 +1,7 @@
+# Where to look for Theo's design work
+
+Theo asks for five versions of a T4 Canvas homepage from the same brief. Around 05:59 he introduces Anthropic's `frontend-design` skill. Around 18:42 he compares outputs, and around 28:03 he discusses refining a direction once he knows what he likes. Watch for the detail he would keep when he asks for another pass. [The design skill at 05:59](https://www.youtube.com/watch?v=f2FnYRP5kC4&t=359s) · [The comparison at 18:42](https://www.youtube.com/watch?v=f2FnYRP5kC4&t=1122s) · [The follow-up at 28:03](https://www.youtube.com/watch?v=f2FnYRP5kC4&t=1683s) · [Anthropic's skill as it existed at the time](https://github.com/anthropics/claude-code/blob/62c3cbc47147ddbf666b210be13a91133e7d449e/plugins/frontend-design/skills/frontend-design/SKILL.md)
+
+For work already on screen, watch Theo iterate on T3 Code using screenshots and comparisons with other interfaces. Use a reference alongside your own render to spot a concrete difference, such as whether the reader can distinguish the selected item from its neighbors. [Agents Sucked At UI (Until Today)](https://www.youtube.com/watch?v=xq0eB8vxeqk)
+
+For live examples, start at Theo's project index. The T3 Code site introduces its commit action beside a branch, a list of changed files, and a diff count. The reader sees what the button will act on. That same idea could put a changed sentence next to the control that switches between two drafts. [Theo's projects](https://t3.gg/) · [T3 Code](https://t3.codes/)

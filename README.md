@@ -24,7 +24,8 @@ AI agent skills for code review, Git workflows, documentation, and structured da
 | **using-git-worktrees** | Create or move Git worktrees only after the user confirms the location. Defaults to `/home/elhaam/workspace/coding/bluum/worktrees/` and preserves uncommitted changes during moves. |
 | **conflict-rebase-resolution** | Merge or rebase by gathering a holistic view of conflicts, then resolving them safely. |
 | **readable-html-dossier** | Visual-first HTML reports: the answer up front, a diagram or table for every point, captions instead of essays, evidence one click away. |
-| **show-me** | Explain with a focused HTML diagram rendered inline in T3 Code and a brief takeaway. |
+| **show-me** | Deliver explanations as inline HTML in T3 Code, with text-based fallbacks. |
+| **html-taste** | Develop or refine the visual design of an HTML artifact using its subject, audience, and references. |
 | **visual-grilling** | Draw each round of a grilling session as a board rendered inline in T3 Code. Every question gets a card with its context drawn, the options side by side, and a name for each option that you can say aloud. Reads dictated answers by sound and shows what it heard on the next board. |
 | **html-feedback** | Keep feedback on HTML artifacts inside the document, on a path the current agent is verified to read. |
 | **html-read-aloud** | Add in-browser narration and synchronized scrolling to standalone HTML documents via the Web Speech API — block-by-block reading, active-block highlighting, voice/rate controls, progress persistence. Works from `file://` with no server, framework, or external dependency. Composes with readable-html-dossier. |
