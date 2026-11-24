@@ -1,17 +1,13 @@
 ---
 name: laptop-compute-caps
-description: Laptop compute caps - keep Elhaam's workstation at or under 50% CPU and 70% RAM. Use before running anything CPU- or RAM-heavy on this machine (model runs, transcription, ffmpeg encodes, renders, big builds or test suites), or when choosing between this laptop and boxes.dev.
+description: Laptop compute caps - keep Elhaam's workstation at or under 50% CPU and 70% RAM. Use before running anything CPU- or RAM-heavy on this machine (model runs, transcription, ffmpeg encodes, renders, big builds or test suites), or when deciding whether to request remote compute.
 ---
 
 # Laptop compute caps
 
-Elhaam, 15 Nov 2026: "use boxes.dev compute as much as you want but for this laptop's compute stay at 50% CPU and 70% RAM (wanna keep it usable)".
+Light tasks such as ffprobe, stream copies, git and small scripts can run directly. Run heavy local jobs through [the capped launcher](scripts/capped.sh).
 
-## Where heavy work runs
-
-1. **boxes.dev first.** Model runs, transcription, ffmpeg encodes, renders, big builds and test suites go to devboxes. Use them freely; [boxes-dev](../boxes-dev/SKILL.md) covers how.
-2. **This laptop only when a box can't take the job**: all 12 awake devboxes the Pro plan allows are busy, or the job needs something only the laptop has. Then the job runs through [`scripts/capped.sh`](scripts/capped.sh).
-3. **Light steps run directly**: ffprobe, a stream copy, a few stills, git, small scripts.
+Remote compute is off by default. Only use Agent 37 with Elhaam's explicit permission for the specific run, including jobs on an already-running instance. A setup request or approval for a previous run does not grant permission for the next. Never launch or wake boxes.dev.
 
 ## The caps
 
