@@ -27,16 +27,17 @@ The controller reads the whole document when no root is marked. Code, navigation
 
 ## Block A: controller CSS
 
-Copy into `<head>`. It reuses the host document's design tokens (`--accent`, `--panel`, `--text`, `--muted`, `--border`) when they exist, so it picks up the dossier theme automatically, and falls back to its own defaults otherwise.
+Copy into `<head>`. It reuses the host page's `--accent`, `--panel`, `--text`, `--muted` and `--border` variables when the page defines them, and otherwise follows the browser's light or dark system colours.
 
 ```css
 /* ===== HTML read-aloud controller ===== */
 #reader-controller{
-  --reader-accent: var(--accent, #8ab4ff);
-  --reader-bg: var(--panel, #1f1f1f);
-  --reader-text: var(--text, #e6e1d9);
-  --reader-muted: var(--muted, #aaa39a);
-  --reader-border: var(--border, #333);
+  --reader-accent: var(--accent, Highlight);
+  --reader-bg: var(--panel, Canvas);
+  --reader-text: var(--text, CanvasText);
+  --reader-muted: var(--muted, GrayText);
+  --reader-border: var(--border, GrayText);
+  color-scheme: light dark;
   position: fixed;
   bottom: 1rem;
   inset-inline-end: 1rem;
@@ -105,10 +106,10 @@ Copy into `<head>`. It reuses the host document's design tokens (`--accent`, `--
 #reader-status{display:block;margin-bottom:.5rem;color:var(--reader-muted);min-height:1.4em}
 #reader-controller :focus-visible{outline:3px solid var(--reader-accent);outline-offset:2px}
 [data-reader-active="true"]{
-  outline: 2px solid var(--reader-accent, #8ab4ff);
+  outline: 2px solid var(--accent, Highlight);
   outline-offset: 3px;
   border-radius: 4px;
-  box-shadow: inset 3px 0 0 var(--reader-accent, #8ab4ff);
+  box-shadow: inset 3px 0 0 var(--accent, Highlight);
   scroll-margin-top: 5rem;
 }
 @media (prefers-reduced-motion: reduce){
@@ -616,15 +617,15 @@ A minimal standalone file that narrates itself from `file://`. It combines the t
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Read-aloud example</title>
   <style>
-    body{margin:0;font:400 1.125rem/1.7 system-ui,-apple-system,"Segoe UI",sans-serif;
-      background:#121212;color:#e6e1d9;padding:2rem}
+    :root{color-scheme:light dark}
+    body{margin:0;font:400 1.125rem/1.7 system-ui,-apple-system,"Segoe UI",sans-serif;padding:2rem}
     main{max-width:min(65ch,100% - 2rem);margin:auto}
-    pre{background:#1b1b1b;padding:1rem;overflow-x:auto}
+    pre{border:1px solid GrayText;padding:1rem;overflow-x:auto}
     nav{margin-bottom:2rem}
     /* Block A: controller CSS */
     #reader-controller{
-      --reader-accent:#8ab4ff;--reader-bg:#1b1b1b;--reader-text:#e6e1d9;
-      --reader-muted:#aaa39a;--reader-border:#333;
+      --reader-accent:var(--accent,Highlight);--reader-bg:var(--panel,Canvas);--reader-text:var(--text,CanvasText);
+      --reader-muted:var(--muted,GrayText);--reader-border:var(--border,GrayText);color-scheme:light dark;
       position:fixed;bottom:1rem;inset-inline-end:1rem;z-index:9999;
       max-width:calc(100% - 2rem);padding:.75rem;border:1px solid var(--reader-border);
       border-radius:1rem;background:var(--reader-bg);color:var(--reader-text);
@@ -649,8 +650,8 @@ A minimal standalone file that narrates itself from `file://`. It combines the t
       clip:rect(0 0 0 0);white-space:nowrap;border:0}
     #reader-status{display:block;margin-bottom:.5rem;color:var(--reader-muted);min-height:1.4em}
     #reader-controller :focus-visible{outline:3px solid var(--reader-accent);outline-offset:2px}
-    [data-reader-active="true"]{outline:2px solid var(--reader-accent,#8ab4ff);outline-offset:3px;
-      border-radius:4px;box-shadow:inset 3px 0 0 var(--reader-accent,#8ab4ff);scroll-margin-top:5rem}
+    [data-reader-active="true"]{outline:2px solid var(--accent,Highlight);outline-offset:3px;
+      border-radius:4px;box-shadow:inset 3px 0 0 var(--accent,Highlight);scroll-margin-top:5rem}
     @media (prefers-reduced-motion:reduce){#reader-controller{transition:none}
       [data-reader-active="true"]{transition:none}}
     @media print{#reader-controller{display:none!important}

@@ -24,11 +24,11 @@ Done when every card from the last board is settled, settled as a guess, or queu
 
 ## 2. Draw the board
 
-Read [`sample-round.html`](sample-round.html) once per session. It is a whole round in the markup the board's stylesheet expects, and its first comment lists the drawing pieces. Write the new round to `round.html` in a scratch directory with the same structure, top to bottom.
+Read [`sample-round.md`](sample-round.md) once per session. It is the content of a whole round. Write the new round as one self-contained page, `board.html` in a scratch directory, with the same parts top to bottom.
 
 **Heard.** What you took from the user's last message, a line each in your own words, guesses marked. A line the user corrects reopens its decision.
 
-**Map.** The design tree in lanes: decisions settled with their answers, the cards on this board, and the questions waiting, each with what it waits on. That is a card, a lookup still running, or the next board. Leave out a lane with nothing in it.
+**Map.** The design tree: decisions settled with their answers, the cards on this board, and the questions waiting, each with what it waits on. That is a card, a lookup still running, or the next board. Leave out a group with nothing in it.
 
 **Cards.** Each has four parts in this order.
 
@@ -39,7 +39,7 @@ Read [`sample-round.html`](sample-round.html) once per session. It is a whole ro
 
 A fact you found that undercuts the brief gets its own card, asked first. A card whose scene needs a lookup still running waits for a later board.
 
-Use the sample's drawing pieces where they fit, and your own HTML, styles or inline SVG where they don't. Words on the board are labels and captions of a sentence or two. A point that needs a paragraph still needs a drawing.
+Design the board with [html-taste](../html-taste/SKILL.md) for this round's content. The user reads it once and answers aloud, so make each option's spoken name the largest word on its option, and say your pick with its reason, the user's proposal and each guess in words beside what they describe. Settle a layout on the session's first board and keep it, so the user finds each part in the same place every round. Words on the board are labels and captions of a sentence or two. A point that needs a paragraph still needs a drawing.
 
 The user answers by dictating the next message, so the board has no inputs.
 
@@ -47,13 +47,7 @@ Done when the user could answer every card from the board alone, and every optio
 
 ## 3. Show it
 
-Join the stylesheet and the round into one page.
-
-```sh
-cat <this skill's directory>/board-head.html round.html > board.html
-```
-
-Pass `board.html` to `html_preview` and fix anything that overflows or is hard to read. Preview again at 390 wide when the round has drawing pieces of your own. A page taller than 2000 pixels loses its last card to the next board. Then pass the page to `html_render` with the measured height.
+Pass `board.html` to `html_preview` and fix anything that overflows or is hard to read. Preview again at 390 wide. A page taller than 2000 pixels loses its last card to the next board. Then pass the page to `html_render` with the measured height.
 
 Keep the reply to one line carrying only what the board cannot show, such as a lookup still running. With nothing to add, a few words that the board is ready are enough. The questions stay on the board. Then wait for the answer.
 
